@@ -1,12 +1,12 @@
 <template>
   <div v-if="currentSong" class="lyrics-main">
     <div
-      class="song- bgimg"
+      class="song-bgimg"
       :style="{
         backgroundImage: `url(${currentSong.picUrl}?param=224y224)`,
       }"
     />
-    <div class="flex -justify flex-col lyrics-left">
+    <div class="flex-justify flex-col lyrics-left">
       <img class="song-img" :src="currentSong.picUrl + '?param=224y224'" alt />
       <div>
         <div class="flex align-end justify-between">
@@ -56,7 +56,7 @@
 import { getLyric } from '@/api/song.js'
 import { store } from '@/store'
 import { watch, ref, computed } from 'vue'
-import { lyricParser } from '@/utils/lyrics.js'
+import { lyricFormat } from '@/utils/lyrics.js'
 import ProcessSlider from '@/components/ProcessSlider.vue'
 import { formatDt } from '@/utils/useTool.js'
 
@@ -85,7 +85,7 @@ watch(
   async val => {
     if (val) {
       const data = await getLyric(val.id)
-      const lyric = lyricParser(data)
+      const lyric = lyricFormat(data)
 
       //copy from https://github.com/qier222/YesPlayMusic/blob/d580e633581df7c67e37831e42cb6ada4f03e26b/src/views/lyrics.vue
       let ret = []
