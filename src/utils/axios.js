@@ -1,8 +1,7 @@
 import Axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { getCookie } from '@/utils/useTool.js'
-
-const baseURL = 'http://localhost:3000/'
+const baseURL = process.env.NODE_ENV === 'production'?import.meta.env.VITE_APP_NETEASE_API_URL:'http://localhost:3000/'
 
 const axios = Axios.create({
   baseURL,
