@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { getCookie } from '@/utils/useTool.js'
+// import { getCookie } from '@/utils/useTool.js'
 
 const Http = axios.create({
-  baseURL: '',
   withCredentials: true,
   timeout: 20000, // 请求超时 20s
 })
@@ -15,6 +14,7 @@ Http.interceptors.request.use(
      * 这里对 config 不做任何处理，直接返回
      */
     if (!config.params) config.params = {}
+    // config.params.cookie = `MUSIC_U=${getCookie('MUSIC_U')};`
     return config
   },
   error => {
