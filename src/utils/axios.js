@@ -15,6 +15,8 @@ Http.interceptors.request.use(
      * 这里对 config 不做任何处理，直接返回
      */
     if (!config.params) config.params = {}
+    config.url = `${import.meta.env.PROD?'':'/mock'}${config.url}`
+    console.log(config.url)
     // config.params.cookie = `MUSIC_U=${getCookie('MUSIC_U')};`
     return config
   },

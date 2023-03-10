@@ -9,7 +9,7 @@ import axios from '@/utils/axios.js'
 export function getPersonalized(limit=10) {
   return axios({
     method: 'get',
-    url: '/mock/personalized',
+    url: '/personalized',
     params: { limit },
   })
 }
@@ -23,7 +23,7 @@ export function getPersonalized(limit=10) {
 export function getAlbumNew({limit=10, offset=0, area='all'}) {
   return axios({
     method: 'get',
-    url: '/mock/album/new',
+    url: '/album/new',
     params: { limit, offset, area },
   })
 }
@@ -39,7 +39,7 @@ export function getAlbumNew({limit=10, offset=0, area='all'}) {
 export function getToplistArtist(params) {
   return axios({
     method: 'get',
-    url: '/mock/toplist/artist',
+    url: '/toplist/artist',
     params: params,
   })
 }
@@ -50,7 +50,7 @@ export function getToplistArtist(params) {
 export function getToplist(params) {
   return axios({
     method: 'get',
-    url: '/mock/toplist',
+    url: '/toplist',
     params: params,
   })
 }
