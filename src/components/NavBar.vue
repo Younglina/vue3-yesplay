@@ -59,7 +59,7 @@
     }
     a{
       text-decoration: none;
-      font-size: 1.2em;
+      font-size: 1.15em;
       font-weight: bold;
     }
   }

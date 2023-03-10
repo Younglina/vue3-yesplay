@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite'
-import Components from 'unplugin-vue-components/vite'
 import vue from '@vitejs/plugin-vue'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { join, resolve } from 'path'
+// 自动导入vue3的api；不用import组件直接使用
+import Components from 'unplugin-vue-components/vite'
+// svg组件
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),

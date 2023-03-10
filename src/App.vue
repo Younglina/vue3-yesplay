@@ -9,6 +9,6 @@
 </template>
 <style lang="scss" scoped>
 main{
-  padding: 60px 5vw 96px;
+  padding: 60px 10vw 96px;
 }
 </style>
