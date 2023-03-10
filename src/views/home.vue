@@ -41,7 +41,4 @@ Promise.all([getPersonalized(), getToplistArtist(), getAlbumNew({}), getToplist(
 </script>
 <template>
   <CardList v-for="val in cardList" :key="val.title" :title="val.title" :type="val.type" :cardNum="val.cardNum" :cards="val.data"></CardList>
-  <!-- <CardList :cards="cardList.toplistArtist" title="推荐艺人" type="artist" cardNum="6"></CardList>
-  <CardList :cards="cardList.albumNew" title="新专速递"></CardList>
-  <CardList :cards="cardList.toplist" title="排行榜"></CardList> -->
 </template>
