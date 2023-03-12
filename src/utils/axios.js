@@ -33,6 +33,7 @@ Http.interceptors.response.use(
       console.error(
         `Code: ${response.data.code}, Message: ${response.data.msg}`,
       )
+      throw({code: response.data.code, msg: response.data.msg || response.data.desc})
     } else {
       return response.data
     }
