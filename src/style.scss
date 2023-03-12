@@ -4,7 +4,8 @@
   --color-text: #333;
   --color-subtext: #666;
   --color-primary: #646cff;
-  --color-bg-primary: rgba(222,222,222,.3)
+  --color-bg-primary: rgba(100,108,255,.1);
+  --color-bg-gray: rgba(222,222,222,.3);
 }
 
 button {
@@ -27,4 +28,8 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
+
+p{
+  margin: 0;
 }

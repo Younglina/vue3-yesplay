@@ -55,4 +55,38 @@ export function getToplist(params) {
   })
 }
 
+/**
+  说明 : 调用此接口 , 可获取网友精选碟歌单
+  可选参数 : order: 可选值为 'new' 和 'hot', 分别对应最新和最热 , 默认为 'hot'
+  cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从歌单分类接口获取(/playlist/catlist)
+  limit: 取出歌单数量 , 默认为 50
+  offset: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)*50, 其中 50 为 limit 的值
+ */
+export function getTopPlayList(params) {
+  return axios({
+    method: 'get',
+    url: '/top/playlist',
+    params: params
+  })
+}
 
+/**
+ 说明 : 调用此接口 , 可获取精品歌单
+ 可选参数 : cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从精品歌单标签列表接口获取(/playlist/highquality/tags)
+ limit: 取出歌单数量 , 默认为 50
+ before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
+ */
+export function getHighqualityList(params) {
+  return axios({
+    method: 'get',
+    url: '/top/playlist/highquality',
+    params: params
+  })
+}
+
+export const getApiByType = {
+  personalized: getPersonalized,
+  highquality: getHighqualityList,
+  toplist: getToplist,
+  playList: getTopPlayList,
+}

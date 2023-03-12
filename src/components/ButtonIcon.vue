@@ -16,7 +16,7 @@ button {
   font-size: 1em;
   transition: scale 0.25s;
   &:hover {
-    background-color: var(--color-bg-primary)
+    background-color: var(--color-bg-gray)
   }
   &:active {
     transform: scale(0.94);

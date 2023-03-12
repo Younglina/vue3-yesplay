@@ -25,15 +25,15 @@ const cardList = reactive({
   },
 })
 
-Promise.all([getPersonalized(), getToplistArtist(), getAlbumNew({}), getToplist()]).then(res => {
-  console.log(res)
-  cardList.personalized.data = res[0].result
-  cardList.toplistArtist.data = res[1].list.artists.slice(0, 6)
-  cardList.albumNew.data = res[2].albums.map(item=>{
-    item.subLink={ type: 'artist', id: item.artist.id, name: item.artist.name}
-    return item
-  })
-  cardList.toplist.data = res[3].list.slice(0, 5)
+// Promise.all([getPersonalized(), getToplistArtist(), getAlbumNew({}), getToplist()]).then(res => {
+Promise.all([getPersonalized()]).then(res => {
+  cardList.personalized.data = res[0]?res[0].result:[]
+  // cardList.toplistArtist.data = res[1]?res[1].list.artists.slice(0, 6):[]
+  // cardList.albumNew.data = (res[2]?res[2].albums:[]).map(item=>{
+  //   item.subLink={ type: 'artist', id: item.artist.id, name: item.artist.name}
+  //   return item
+  // })
+  // cardList.toplist.data = res[3]?res[3].list.slice(0, 5):[]
 }).catch(err => {
   console.log(err)
 });

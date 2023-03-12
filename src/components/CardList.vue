@@ -5,6 +5,7 @@ const props = defineProps({
   cards: { type: Array },
   title: { type: String },
   type: { type: String },
+  loading: { type: Boolean, default: false },
   cardNum: { default: 5 },
   gap: { default: '40px 22px' }
 })
@@ -28,24 +29,31 @@ const getImgUrl = (item) => {
 }
 </script>
 <template>
-  <div class="title">{{ title }}</div>
-  <div class="list" :style="listStyle">
-    <div v-for="item in cards" :key="item.id" class="card">
-      <div class="card-img" :style="radiusStyle">
-        <img :src="getImgUrl(item)" loading="lazy" :style="radiusStyle" />
-        <div class="play-warp">
-          <button class="play-btn">
-            <SvgIcon name="play" />
-          </button>
+  <WyLoading v-if="loading" />
+  <template v-else>
+    <div class="title">{{ title }}</div>
+    <div class="list" :style="listStyle" v-if="cards.length > 0">
+      <div v-for="item in cards" :key="item.id" class="card">
+        <div class="card-img" :style="radiusStyle">
+          <img :src="getImgUrl(item)" loading="lazy" :style="radiusStyle" />
+          <div class="play-warp">
+            <button class="play-btn">
+              <SvgIcon name="play" />
+            </button>
+          </div>
+        </div>
+        <div class="card-name" :style="{ 'text-align': type === 'artist' ? 'center' : 'start' }">
+          <LinkTo :link="{ name: item.name, type, id: item.id }" />
+          <br />
+          <LinkTo v-if="item.subLink" :link="item.subLink" color="var(--color-subtext)" font-size="0.75em" />
         </div>
       </div>
-      <div class="card-name" :style="{ 'text-align': type === 'artist' ? 'center' : 'start' }">
-        <LinkTo :link="{name: item.name, type, id: item.id}"/>
-        <br />
-        <LinkTo v-if="item.subLink" :link="item.subLink" color="var(--color-subtext)" font-size="0.75em"/>
-      </div>
     </div>
-  </div>
+    <div v-else class="no-data">
+      <SvgIcon name="nodata" />
+      <p>暂无数据</p>
+    </div>
+  </template>
 </template>
 <style scoped lang='scss'>
 .title {
@@ -56,14 +64,17 @@ const getImgUrl = (item) => {
 
 .list {
   display: grid;
+
   .card-img {
     @include flex-center;
     position: relative;
     cursor: pointer;
     transition: 0.2s;
     user-select: none;
+
     &:hover {
       box-shadow: 0 2px 10px 10px rgba(0, 0, 0, 0.1);
+
       .play-btn {
         visibility: visible;
       }
@@ -106,4 +117,12 @@ const getImgUrl = (item) => {
     padding-top: 6px;
   }
 }
-</style>
+
+.no-data {
+  text-align: center;
+
+  .svg-icon {
+    width: 15vw;
+    height: 15vw;
+  }
+}</style>

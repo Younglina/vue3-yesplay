@@ -1,4 +1,10 @@
 <script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+const navLinks = [{ name: 'Home', label: '首页' }, { name: 'Explore', label: '发现' }, { name: 'MusicLibrary', label: '音乐库' }]
+const route = useRoute()
+const currentNav = computed(() => route.name)
 </script>
 
 <template>
@@ -12,14 +18,9 @@
       </ButtonIcon>
     </div>
     <div class="nav-links">
-      <ButtonIcon radius="6px">
-        <router-link to="/" style="color: var(--color-primary)">首页</router-link>
-      </ButtonIcon>
-      <ButtonIcon radius="6px">
-      <router-link to="/">发现</router-link>
-      </ButtonIcon>
-      <ButtonIcon radius="6px">
-        <router-link to="/">音乐库</router-link>
+      <ButtonIcon v-for="item in navLinks" :key="item.name"
+        :style="{ color: currentNav === item.name ? 'var(--color-primary)' : 'inherit' }" radius="6px">
+        <router-link :to="{ name: item.name }">{{ item.label }}</router-link>
       </ButtonIcon>
     </div>
     <div>
@@ -49,15 +50,25 @@
   backdrop-filter: saturate(180%) blur(20px);
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 49;
-  &-btns,&-links{
+
+  &-btns,
+  &-links {
     @include flex-center;
   }
-  &-links{
-    .button-icon{
+  &-btns{
+    .svg-icon{
+      width: 1em;
+      height: 1em;
+      margin: 6px;
+    }
+  }
+  &-links {
+    .button-icon {
       margin: 6px 18px;
       padding: 6px 10px;
     }
-    a{
+
+    a {
       text-decoration: none;
       font-size: 1.15em;
       font-weight: bold;
