@@ -1,5 +1,9 @@
 <script setup>
-import message from '@/components/Message/instance.js'
+import message from '@/components/Message'
+import { onMounted } from 'vue';
+onMounted(()=>{
+  message.success('test global message')
+})
 function showMessage(){
   message.success('success')
   message.error('error')
