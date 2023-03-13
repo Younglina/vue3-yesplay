@@ -1,9 +1,5 @@
 <script setup>
 import message from '@/components/Message/instance.js'
-import { onMounted, ref } from 'vue';
-onMounted(()=>{
-  message("message123123")
-})
 function showMessage(){
   message.success('success')
   message.error('error')

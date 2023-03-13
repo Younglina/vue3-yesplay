@@ -6,7 +6,7 @@ const props = defineProps({
   id: { type: String, require: true },
   type: { type: String, default: 'info' },
   message: { type: String, default: "message" },
-  duration: { type: Number, default: 1500 },
+  duration: { type: Number, default: 3000 },
   onClose: { type: Function },
   offset: { type: Number, default: 12 },
   zIndex: { type: Number, default: 2000 }
@@ -85,12 +85,12 @@ onMounted(async ()=>{
   border-color: #e9e9eb;
 }
 .error{
-  color: #67c23a;
+  color: #f56c6c;
   background-color: #fef0f0;
   border-color: #fde2e2;
 }
 .warning{
-  color: #f56c6c;
+  color: #e6a23c;
   background-color: #fdf6ec;
   border-color: #faecd8;
 }
