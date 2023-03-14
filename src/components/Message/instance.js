@@ -30,7 +30,7 @@ export const getLastOffset = (id) => {
 
 export const getOffsetOrSpace = (id, offset) => {
   const idx = instances.findIndex((instance) => instance.id === id)
-  return idx > 0 ? 16 : offset
+  return idx > 0 ? 16 : 60
 }
 
 const createMessage = (
