@@ -20,12 +20,15 @@ export function getCookie(key) {
 
 
 export const withInstallFunction = (fn, name) => {
-  console.log(fn, name)
   fn.install = (app) => {
-    console.log(app)
     fn._context = app._context
     app.config.globalProperties[name] = fn
   }
 
   return fn
+}
+
+export const getImgUrl = (item) => {
+  let url = item.picUrl || item.coverImgUrl;
+  return `${url}?param=512y512`;
 }

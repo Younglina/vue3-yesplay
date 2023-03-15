@@ -31,9 +31,9 @@ Http.interceptors.response.use(
      */
     if (response.data.code !== 200) {
       console.error(
-        `Code: ${response.data.code}, Message: ${response.data.msg}`,
+        `code: ${response.data.code}, message: ${response.data.msg}`,
       )
-      throw({code: response.data.code, msg: response.data.msg || response.data.desc})
+      throw({code: response.data.code, message: response.data.msg || response.data.desc})
     } else {
       return response.data
     }
@@ -42,7 +42,7 @@ Http.interceptors.response.use(
     if (error.response && error.response.data) {
       const code = error.response.status
       const msg = error.response.data.message
-      console.error(`Code: ${code}, Message: ${msg}`)
+      console.error(`code: ${code}, message: ${msg}`)
     } else {
       console.error(`${error}`)
     }

@@ -1,5 +1,7 @@
 <script setup>
 import { computed } from 'vue';
+import { useRouter } from 'vue-router'
+import { getImgUrl } from '@/utils/useTool.js'
 
 const props = defineProps({
   cards: { type: Array },
@@ -23,9 +25,9 @@ const radiusStyle = computed(() => {
   }
 })
 
-const getImgUrl = (item) => {
-  let url = item.picUrl || item.coverImgUrl;
-  return `${url}?param=512y512`;
+const router = useRouter()
+const getPageByType = (id) => {
+  router.push(`/${props.type}/${id}`)
 }
 </script>
 <template>
@@ -33,7 +35,7 @@ const getImgUrl = (item) => {
   <template v-else>
     <div class="title">{{ title }}</div>
     <div class="list" :style="listStyle" v-if="cards.length > 0">
-      <div v-for="item in cards" :key="item.id" class="card">
+      <div v-for="item in cards" :key="item.id" class="card" @click="getPageByType(item.id)">
         <div class="card-img" :style="radiusStyle">
           <img :src="getImgUrl(item)" loading="lazy" :style="radiusStyle" />
           <div class="play-warp">
