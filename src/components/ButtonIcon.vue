@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-  radius: {default: '20%'}
+  radius: {default: '6px'}
 })
 </script>
 <template>

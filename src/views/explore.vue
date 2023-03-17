@@ -51,7 +51,7 @@ const getCatByType = (type) => {
 <template>
   <h1>发现</h1>
   <div class="hot-cats">
-    <ButtonIcon v-for="item in hotCat" :key="item.name" @click="changeCat(item)" radius="6px"
+    <ButtonIcon v-for="item in hotCat" :key="item.name" @click="changeCat(item)"
       :class="item.name === currentCat ? 'active' : ''">
       <span v-if="!item.icon" class="cat-name">{{ item.name }}</span>
       <SvgIcon v-else :name="item.icon" :color="showAllCats ? 'var(--color-primary)' : '#666'" />
@@ -63,7 +63,7 @@ const getCatByType = (type) => {
       <div class="cat-name">
         <ButtonIcon v-for="cat in getCatByType(+key)" :key="cat"
           :class="(cat === currentCat || cat === templateCur) ? 'active' : ''" @click="changeCat({ name: cat })"
-          radius="6px">{{ cat }}</ButtonIcon>
+          >{{ cat }}</ButtonIcon>
       </div>
     </div>
   </div>

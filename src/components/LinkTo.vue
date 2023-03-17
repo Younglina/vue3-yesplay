@@ -9,9 +9,7 @@ const props = defineProps({
       name: '',
       type: ''
     }
-  },
-  color: { default: "#000000" },
-  fontSize: { default: '1em' }
+  }
 })
 
 const linkStyle = computed(() => {
@@ -22,6 +20,10 @@ const linkStyle = computed(() => {
 })
 </script>
 <template>
-  <router-link :to="`/${link.type}/${link.id}`" :style="linkStyle">{{ link.name }}</router-link>
+  <router-link :to="`/${link.type}/${link.id}`" class="link-to">{{ link.name }}</router-link>
 </template>
-<style scoped lang='scss'></style>
+<style scoped lang='scss'>
+.link-to{
+  color: #000000;
+}
+</style>

@@ -40,14 +40,14 @@ const getPageByType = (id) => {
           <img :src="getImgUrl(item)" loading="lazy" :style="radiusStyle" />
           <div class="play-warp">
             <button class="play-btn">
-              <SvgIcon name="play" />
+              <SvgIcon name="play" color="#ffffff"/>
             </button>
           </div>
         </div>
         <div class="card-name" :style="{ 'text-align': type === 'artist' ? 'center' : 'start' }">
           <LinkTo :link="{ name: item.name, type, id: item.id }" />
           <br />
-          <LinkTo v-if="item.subLink" :link="item.subLink" color="var(--color-subtext)" font-size="0.75em" />
+          <LinkTo v-if="item.subLink" :link="item.subLink" class="sublink"/>
         </div>
       </div>
     </div>
@@ -76,7 +76,6 @@ const getPageByType = (id) => {
 
     &:hover {
       box-shadow: 0 2px 10px 10px rgba(0, 0, 0, 0.1);
-
       .play-btn {
         visibility: visible;
       }
@@ -117,6 +116,10 @@ const getPageByType = (id) => {
   .card-name {
     font-weight: 600;
     padding-top: 6px;
+    .sublink{
+      color: var(--color-subtext);
+      font-size: 0.75em; 
+    }
   }
 }
 

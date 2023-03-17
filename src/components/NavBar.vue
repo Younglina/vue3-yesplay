@@ -10,21 +10,21 @@ const currentNav = computed(() => route.name)
 <template>
   <nav class="nav">
     <div class="nav-btns">
-      <ButtonIcon>
+      <ButtonIcon radius="20%">
         <SvgIcon name="back"></SvgIcon>
       </ButtonIcon>
-      <ButtonIcon>
+      <ButtonIcon radius="20%">
         <SvgIcon name="forword"></SvgIcon>
       </ButtonIcon>
     </div>
     <div class="nav-links">
       <ButtonIcon v-for="item in navLinks" :key="item.name"
-        :style="{ color: currentNav === item.name ? 'var(--color-primary)' : 'inherit' }" radius="6px">
+        :style="{ color: currentNav === item.name ? 'var(--color-primary)' : 'inherit' }">
         <router-link :to="{ name: item.name }">{{ item.label }}</router-link>
       </ButtonIcon>
     </div>
     <div>
-      <ButtonIcon radius="6px">
+      <ButtonIcon>
         <SvgIcon name="user"></SvgIcon>
       </ButtonIcon>
     </div>
