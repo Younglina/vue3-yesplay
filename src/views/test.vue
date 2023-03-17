@@ -1,20 +1,13 @@
 <script setup>
-import message from '@/components/Message'
-import { onMounted } from 'vue';
-onMounted(() => {
-  message.success('success message')
-  message({
-    message: 'warning message',
-    type: 'warning',
-    duration: 1000
-  })
-})
-const types = ['success', 'error', 'warning', 'info']
+import contextMenu from '@/components/contextMenu'
+import { h, render } from 'vue'
 
+window.oncontextmenu = (e) => {
+  e.preventDefault()
+  contextMenu({ type: 'aa' }, e)
+}
 </script>
 <template>
-  <ButtonIcon v-for="item in types" radius="6px" :key="item" @click="$message[item](`${item} message`)">
-    show {{ item }} Message
-  </ButtonIcon>
+  asdf
 </template>
 <style scoped lang="scss"></style>
