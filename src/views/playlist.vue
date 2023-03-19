@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import Message from '@/components/Message'
 import ContextMenu from '@/components/ContextMenu'
@@ -32,11 +32,18 @@ const formatDT = (dt) => {
   return `${hours > 0 ? hours + ':' : ''}${mins}:${seconds}`
 }
 
+const Cmenu = ref(null)
 const openMenu = (e, data, idx) => {
   e.preventDefault()
   data.menuType = 'playlist'
-  ContextMenu(e, data)
+  Cmenu.value = ContextMenu(e, data)
 }
+
+onUnmounted(()=>{
+  if(Cmenu){
+    Cmenu.value.destroy()
+  }
+})
 </script>
 <template>
   <div v-if="playlistDetail" class="playlist">
