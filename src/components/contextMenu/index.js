@@ -2,16 +2,20 @@ import MenuContext from './menu.vue'
 import { h, render } from 'vue'
 
 let curInstance = null
-
-const createMenu = (options, e) => {
+let seed = 1
+const createMenu = (e, data) => {
   if(curInstance){
     curInstance.destroy()
   }
   curInstance = null
+  let id = seed++
   const container = document.createElement('div')
   const appendTo = document.body
   const props = {
-    ...options,
+    data,
+    onClose: () => {
+      curInstance.destroy()
+    },
   }
   const vnode = h(
     MenuContext,
@@ -44,8 +48,8 @@ const createMenu = (options, e) => {
 
 }
 
-const contextMenu = (options, e) => {
-  const instance = createMenu(options, e)
+const contextMenu = (e, data) => {
+  const instance = createMenu(e, data)
   return instance
 }
 

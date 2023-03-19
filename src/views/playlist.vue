@@ -2,6 +2,7 @@
 import { onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Message from '@/components/Message'
+import ContextMenu from '@/components/ContextMenu'
 import { getPlayListDetail } from '@/api/music.js'
 import { getImgUrl } from '@/utils/useTool.js'
 import dayjs from 'dayjs'
@@ -29,6 +30,12 @@ const formatDT = (dt) => {
   let mins = time.minutes().toString();
   let seconds = time.seconds().toString().padStart(2, '0');
   return `${hours > 0 ? hours + ':' : ''}${mins}:${seconds}`
+}
+
+const openMenu = (e, data, idx) => {
+  e.preventDefault()
+  data.menuType = 'playlist'
+  ContextMenu(e, data)
 }
 </script>
 <template>
@@ -64,7 +71,10 @@ const formatDT = (dt) => {
       </div>
     </div>
     <div class="pl-list">
-      <div v-for="item in playlistDetail.tracks" class="pl-list__warp" :key="item.id">
+      <div v-for="(item, idx) in playlistDetail.tracks" 
+        @click.right.native="openMenu($event, item, idx)"
+        class="pl-list__warp" 
+        :key="item.id">
         <img :src="getImgUrl(item.al)" class="pl-list__img" loading="lazy" alt="图片">
         <div class="pl-list__name">
           <div class="pl-list__title">
