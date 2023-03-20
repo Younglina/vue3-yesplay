@@ -98,6 +98,17 @@ export function getPlayListDetail(id) {
   })
 }
 
+/**
+ 说明 : 调用此接口 , 传入专辑 id, 可获得专辑内容
+ */
+export function getAlbumDetail(id) {
+  return axios({
+    method: 'get',
+    url: '/album',
+    params: {id}
+  })
+}
+
 export const getApiByType = {
   personalized: getPersonalized,
   highquality: getHighqualityList,

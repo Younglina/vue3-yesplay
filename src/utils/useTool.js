@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration';
 
 export function formatDate(v, format = 'YYYY-MM-DD') {
   return dayjs(v).format(format)
@@ -31,4 +32,18 @@ export const withInstallFunction = (fn, name) => {
 export const getImgUrl = (item) => {
   let url = item.picUrl || item.coverImgUrl;
   return `${url}?param=512y512`;
+}
+
+
+export const formatDT = (dt) => {
+  dayjs.extend(duration);
+  let time = dayjs.duration(dt);
+  let hours = time.hours().toString();
+  let mins = time.minutes().toString();
+  let seconds = time.seconds().toString().padStart(2, '0');
+  return `${hours > 0 ? hours + ':' : ''}${mins}:${seconds}`
+}
+
+export const formatData = (da, f) => {
+  return dayjs(da).format(f || 'YYYY年MM月DD日')
 }
