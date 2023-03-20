@@ -1,21 +1,26 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-
-const asdf=()=>{
-  console.log(123)
-}
-const focusaa = () => {
-  console.log(1231231233)
-}
-const contextMenu = ref(null)
-onMounted(() => {
-  console.log(contextMenu)
-  contextMenu.value.focus();
-})
+import axios from "axios";
+import ContextMenu from "@/components/ContextMenu";
+const showContextMenu = (e) => {
+  e.preventDefault();
+  axios
+    .get(
+      "https://www.fastmock.site/mock/6b16c722604e6f9b79e16f7ec3a768d4/vue3vite/playlist/detail"
+    )
+    .then((res) => {
+      ContextMenu(e, res.data.playlist.tracks[0]);
+    });
+};
 </script>
 <template>
-  <div class="context-menu" ref="contextMenu" @focus="focusaa" @blur="asdf" tabindex="-1">
-    asdfasdf
+  <div @click.right.native="showContextMenu($event)">
+    展示右键菜单
+  </div>
+  <div style="text-align: right;" @click.right.native="showContextMenu($event)">
+    展示右侧边界菜单
+  </div>
+  <div style="position: absolute;bottom: 0px" @click.right.native="showContextMenu($event)">
+    展示底部边界菜单
   </div>
 </template>
 <style scoped lang="scss"></style>

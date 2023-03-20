@@ -40,7 +40,7 @@ const openMenu = (e, data, idx) => {
 }
 
 onUnmounted(()=>{
-  if(Cmenu){
+  if(Cmenu.value){
     Cmenu.value.destroy()
   }
 })
