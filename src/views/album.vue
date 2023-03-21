@@ -103,7 +103,7 @@ const joinLike = () => {
   color: var(--color-subtext)
 }
 .album-more{
-  margin: 20px 0;
+  margin-top: 50px;
   font-size: 1.5em;
   font-weight: 500;
 }

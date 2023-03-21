@@ -10,10 +10,10 @@ const currentNav = computed(() => route.name)
 <template>
   <nav class="nav">
     <div class="nav-btns">
-      <ButtonIcon radius="20%">
+      <ButtonIcon radius="20%" @click="$router.go(-1)">
         <SvgIcon name="back"></SvgIcon>
       </ButtonIcon>
-      <ButtonIcon radius="20%">
+      <ButtonIcon radius="20%" @click="$router.go(1)">
         <SvgIcon name="forword"></SvgIcon>
       </ButtonIcon>
     </div>
