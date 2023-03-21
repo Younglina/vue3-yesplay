@@ -1,44 +1,68 @@
 <script setup>
 import { getPersonalized, getAlbumNew, getToplistArtist, getToplist } from '@/api/music.js'
-import { reactive } from 'vue';
-const cardList = reactive({
-  personalized: {
+import { reactive} from 'vue';
+const cardList = reactive([
+  {
     data: [],
     title: "推荐歌单",
-    type: 'playlist'
+    type: 'playlist',
+    key: 'result',
+    loading: true,
+    api: getPersonalized,
   },
-  albumNew: {
+  {
     data: [],
     title: "新专速递",
     type: 'album',
+    api: getAlbumNew,
+    loading: true,
+    key: 'albums',
   },
-  toplistArtist: {
+  {
     data: [],
     title: "推荐艺人",
     type: 'artist',
+    api: getToplistArtist,
+    loading: true,
+    key: 'list',
+    subkey:'artists',
     cardNum: 6
   },
-  toplist: {
+  {
     data: [],
     title: "排行榜",
-    type: 'toplist'
+    type: 'toplist',
+    api: getToplist,
+    loading: true,
+    key: 'list',
+    cardNum: 5,
   },
-})
+])
 
-// Promise.all([getPersonalized(), getToplistArtist(), getAlbumNew({}), getToplist()]).then(res => {
-Promise.all([getPersonalized()]).then(res => {
-  cardList.personalized.data = res[0]?res[0].result:[]
-  // cardList.toplistArtist.data = res[1]?res[1].list.artists.slice(0, 6):[]
-  // cardList.albumNew.data = (res[2]?res[2].albums:[]).map(item=>{
-  //   item.subLink={ type: 'artist', id: item.artist.id, name: item.artist.name}
-  //   return item
-  // })
-  // cardList.toplist.data = res[3]?res[3].list.slice(0, 5):[]
-}).catch(err => {
-  console.log(err)
-});
+cardList.map(item=>{
+  item.api().then(res=>{
+    console.log(item.type, res, res[item.key])
+    let data = res?res[item.key]:[]
+    if(item.type==='album'){
+      data.map(d=>{
+        d.subLink={ type: 'artist', id: d.artist.id, name: d.artist.name}
+      })
+    }
+    if(item.type==='artist'){
+      data = data[item.subkey].slice(6)
+    }
+    if(item.type==='toplist'){
+      data = data.slice(5)
+    }
+    item.data = data
+    item.loading = false
+  }).catch(err=>{
+    console.log(err)
+    item.loading = false
+  })
+})
 
 </script>
 <template>
-  <CardList v-for="val in cardList" :key="val.title" :title="val.title" :type="val.type" :cardNum="val.cardNum" :cards="val.data"></CardList>
+  <CardList v-for="val in cardList" :loading="val.loading" :key="val.title" :title="val.title" :type="val.type" :cardNum="val.cardNum" :cards="val.data"></CardList>
 </template>

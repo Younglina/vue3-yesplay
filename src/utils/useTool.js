@@ -30,7 +30,7 @@ export const withInstallFunction = (fn, name) => {
 }
 
 export const getImgUrl = (item) => {
-  let url = item.picUrl || item.coverImgUrl;
+  let url = item.picUrl || item.imgurl || item.coverImgUrl;
   return `${url}?param=512y512`;
 }
 

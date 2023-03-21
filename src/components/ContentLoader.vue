@@ -1,20 +1,8 @@
 <script setup>
-import axios from "axios";
-import ContextMenu from "@/components/ContextMenu";
 import { ContentLoader } from 'vue-content-loader'
-const showContextMenu = (e) => {
-  e.preventDefault();
-  axios
-    .get(
-      "https://www.fastmock.site/mock/6b16c722604e6f9b79e16f7ec3a768d4/vue3vite/playlist/detail"
-    )
-    .then((res) => {
-      ContextMenu(e, res.data.playlist.tracks[0]);
-    });
-};
 </script>
 <template>
-  <content-loader
+<content-loader
     width="100%"
     height="80vh"
     primaryColor="#f3f3f3"
@@ -35,4 +23,6 @@ const showContextMenu = (e) => {
     <rect x="75%" y="48%" rx="8" ry="8" width="20%" height="20px" />
   </content-loader>
 </template>
-<style scoped lang="scss"></style>
+<style scoped lang='scss'>
+
+</style>

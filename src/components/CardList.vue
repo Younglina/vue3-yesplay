@@ -33,7 +33,7 @@ const getPageByType = (id) => {
 <template>
   <WyLoading v-if="loading" />
   <template v-else>
-    <div class="title">{{ title }}</div>
+    <div v-if="title" class="title">{{ title }}</div>
     <div class="list" :style="listStyle" v-if="cards.length > 0">
       <div v-for="item in cards" :key="item.id" class="card" @click="getPageByType(item.id)">
         <div class="card-img" :style="radiusStyle">
@@ -115,6 +115,8 @@ const getPageByType = (id) => {
 
   img {
     width: 100%;
+    border: 1px solid var(--color-img);
+    aspect-ratio: 1/1;
   }
 
   .card-name {

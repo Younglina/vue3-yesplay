@@ -1,16 +1,17 @@
 <script setup>
-import { onBeforeMount, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, watch } from 'vue';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import Message from '@/components/Message'
 import { getAlbumDetail, getAlbumByArtist } from '@/api/music.js'
 import { getImgUrl, formatData } from '@/utils/useTool.js'
+import ContentLoader from '@/components/ContentLoader.vue'
 
 const albumDetail = ref(null)
 const artistAlbumList = ref([])
 const isLike = ref(false)
 const route = useRoute()
 
-watch(()=>route.params,async (val)=>{
+const routeWatch = watch(()=>route.params,async (val)=>{
   const albumData = await getAlbumDetail(`${val.id}`)
   albumDetail.value = albumData
   getAlbumByArtist({ id: albumData.album.artist.id, limit: 5 }).then(res => {
@@ -21,6 +22,9 @@ watch(()=>route.params,async (val)=>{
   })
 },{immediate:true})
 
+onBeforeRouteLeave(()=>{
+  routeWatch()
+})
 
 const joinLike = () => {
   isLike.value = !isLike.value
@@ -71,6 +75,7 @@ const joinLike = () => {
       <CardList :cards="artistAlbumList" type="album"></CardList>
     </div>
   </div>
+  <ContentLoader v-else/>
 </template>
 <style scoped lang='scss'>
 @import "@/assets/styles/playlist.scss";

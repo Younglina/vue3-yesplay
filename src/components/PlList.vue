@@ -25,7 +25,7 @@ const openMenu = (e, data, idx) => {
     @click.right.native="openMenu($event, item, idx)"
     class="pl-list__warp" 
     :key="item.id">
-    <img v-if="notAlbum" :src="getImgUrl(item.al)" @click="$router.push(`/album/${item.id}`)" class="pl-list__img" loading="lazy" alt="图片">
+    <img v-if="notAlbum" :src="getImgUrl(item.al)" @click="$router.push(`/album/${item.al.id}`)" class="pl-list__img" loading="lazy" alt="图片">
     <div v-else class="pl-list__playidx">
       <div class="pl-list__idx">{{ idx+1 }}</div>
       <SvgIcon class="pl-list__play" name="play" size="1em" color="var(--color-primary)"/>
@@ -89,7 +89,7 @@ const openMenu = (e, data, idx) => {
     width: 46px;
     height: 46px;
     border-radius: 6px;
-    border-radius: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--color-img);
     cursor: pointer;
   }
   &__idx{

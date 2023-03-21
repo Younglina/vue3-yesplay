@@ -1,26 +1,31 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, watch } from 'vue';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import Message from '@/components/Message'
 import ContextMenu from '@/components/ContextMenu'
 import { getPlayListDetail } from '@/api/music.js'
 import { getImgUrl, formatData } from '@/utils/useTool.js'
+import ContentLoader from '@/components/ContentLoader.vue'
 
 const playlistDetail = ref(null)
 const isLike = ref(false)
-onBeforeMount(() => {
-  const route = useRoute()
-  getPlayListDetail(`${route.params.id}`).then(res => {
+
+const route = useRoute()
+const routeWatch = watch(()=>route.params, async (val)=>{
+  getPlayListDetail(`${val.id}`).then(res => {
     playlistDetail.value = res.playlist
   }).catch((e) => {
     Message.error(e.message)
   })
+},{immediate:true})
+
+onBeforeRouteLeave(()=>{
+  routeWatch()
 })
 
 const joinLike = () => {
   isLike.value = !isLike.value
 }
-
 
 const openMenu = (e, data, idx) => {
   data = {menuType: 'play'}
@@ -62,6 +67,7 @@ const openMenu = (e, data, idx) => {
     </div>
     <PlList :list="playlistDetail.tracks" />
   </div>
+  <ContentLoader v-else/>
 </template>
 <style scoped lang='scss'>
 @import "@/assets/styles/playlist.scss";
