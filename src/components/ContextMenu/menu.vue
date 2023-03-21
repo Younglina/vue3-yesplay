@@ -10,6 +10,7 @@ const showData = computed(() => {
   if (pd) {
     data.name = pd.name
     data.id = pd.id
+    data.menuType = pd.menuType
     if (pd.menuType === 'playlist') {
       data.subname = pd.ar[0].name
       data.picUrl = pd.al.picUrl
@@ -27,11 +28,12 @@ onMounted(async () => {
 const clickFunc = (type) => {
   props.onClose()
 }
+
 const actions = [
   '',
   {
     label: '播放',
-    type: 'play',
+    type: 'play'
   },
   {
     label: '添加到队列',
@@ -44,17 +46,29 @@ const actions = [
   },
   {
     label: '添加到歌单',
-    type: '添加到歌单'
+    type: '添加到歌单',
+    menuType: 'play'
   },
   {
     label: '复制链接',
-    type: '复制链接'
+    type: '复制链接',
+    menuType: 'play'
   },
 ]
+
+const showActions = computed(() => {
+  if(props.data){
+    if (props.data.menuType === 'play') {
+      return actions.filter(i => (i.menuType && i.menuType.includes('play')))
+    } else {
+      return actions
+    }
+  }
+})
 </script>
 <template>
-  <div v-if="showData.name" class="context-menu" ref="contextMenu" @blur="onClose" tabindex="-1">
-    <div class="context-menu__info">
+  <div class="context-menu" ref="contextMenu" @blur="onClose" tabindex="-1">
+    <div v-if="showData.name" class="context-menu__info">
       <img class="context-menu__img" :src="getImgUrl(showData)" alt="">
       <div>
         <div class="context-menu__name">
@@ -65,7 +79,7 @@ const actions = [
         </div>
       </div>
     </div>
-    <div v-for="(item, idx) in actions" :key="idx">
+    <div v-for="(item, idx) in showActions" :key="idx">
       <Divide v-if="!item" margin="0" />
       <div v-else class="context-menu__item" @click="clickFunc(item.type)">{{ item.label }}</div>
     </div>
@@ -73,7 +87,7 @@ const actions = [
 </template>
 <style scoped lang='scss'>
 .context-menu {
-  position: fixed;
+  position: absolute;
   padding: 12px 4px;
   border-radius: 6px;
   border: 1px solid var(--color-border);
@@ -81,6 +95,7 @@ const actions = [
   font-size: 0.85em;
   font-weight: 500;
   user-select: none;
+
   &:focus {
     outline: none;
   }
@@ -120,4 +135,5 @@ const actions = [
     color: var(--color-subtext);
     font-size: 0.6em;
   }
-}</style>
+}
+</style>

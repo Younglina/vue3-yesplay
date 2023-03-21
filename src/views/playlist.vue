@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router';
 import Message from '@/components/Message'
 import ContextMenu from '@/components/ContextMenu'
 import { getPlayListDetail } from '@/api/music.js'
-import { getImgUrl,formatDT,formatData } from '@/utils/useTool.js'
+import { getImgUrl, formatData } from '@/utils/useTool.js'
 
 const playlistDetail = ref(null)
 const isLike = ref(false)
@@ -23,8 +23,7 @@ const joinLike = () => {
 
 
 const openMenu = (e, data, idx) => {
-  e.preventDefault()
-  data.menuType = 'playlist'
+  data = {menuType: 'play'}
   ContextMenu(e, data)
 }
 
@@ -55,7 +54,7 @@ const openMenu = (e, data, idx) => {
           <ButtonIcon @click="joinLike">
             <SvgIcon :name="isLike ? 'heartFill' : 'heart'" />
           </ButtonIcon>
-          <ButtonIcon>
+          <ButtonIcon @click="openMenu($event)">
             <SvgIcon name="more" color="var(--color-text)" />
           </ButtonIcon>
         </div>

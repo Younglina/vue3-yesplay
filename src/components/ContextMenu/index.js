@@ -27,7 +27,7 @@ const contextMenu = (e, data) => {
   // vnode为需要渲染的虚拟节点，container为渲染的容器
   render(vnode, container)
   // 首先需要先把菜单真正渲染到页面，才能拿到它的宽度和高度
-  appendTo.appendChild(container.firstElementChild)
+  appendTo.appendChild(container.firstElementChild || container)
   // 当前真正的菜单节点，上面输出的vnode中可以看到，el就是我们的菜单节点
   const curMenu = vnode.el
   // 获取curMenu的高度和宽度，用于临界的计算
