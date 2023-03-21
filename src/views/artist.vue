@@ -15,6 +15,7 @@ const mvsLoading = ref(true)
 const route = useRoute()
 
 const routeWatch = watch(() => route.params, async (val) => {
+  artistDetail.value = null
   const artistData = await getArtist(val.id)
   artistData.hotSongs = artistData.hotSongs.map(item => {
     return {

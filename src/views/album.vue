@@ -12,6 +12,7 @@ const isLike = ref(false)
 const route = useRoute()
 
 const routeWatch = watch(()=>route.params,async (val)=>{
+  albumDetail.value = null
   const albumData = await getAlbumDetail(`${val.id}`)
   albumDetail.value = albumData
   getAlbumByArtist({ id: albumData.album.artist.id, limit: 5 }).then(res => {
@@ -103,7 +104,7 @@ const joinLike = () => {
   color: var(--color-subtext)
 }
 .album-more{
-  margin-top: 50px;
+  margin: 50px 0 20px;
   font-size: 1.5em;
   font-weight: 500;
 }

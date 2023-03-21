@@ -12,6 +12,7 @@ const isLike = ref(false)
 
 const route = useRoute()
 const routeWatch = watch(()=>route.params, async (val)=>{
+  playlistDetail.value = null
   getPlayListDetail(`${val.id}`).then(res => {
     playlistDetail.value = res.playlist
   }).catch((e) => {

@@ -23,6 +23,3 @@ import { ContentLoader } from 'vue-content-loader'
     <rect x="75%" y="48%" rx="8" ry="8" width="20%" height="20px" />
   </content-loader>
 </template>
-<style scoped lang='scss'>
-
-</style>
