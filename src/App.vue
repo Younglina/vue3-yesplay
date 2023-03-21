@@ -4,7 +4,11 @@
 <template>
   <NavBar />
   <main>
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <keep-alive :include="['playlist','album']">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </main>
 </template>
 <style lang="scss" scoped>

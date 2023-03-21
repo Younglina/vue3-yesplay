@@ -46,6 +46,10 @@ const getPageByType = (id) => {
         </div>
         <div class="card-name" :style="{ 'text-align': type === 'artist' ? 'center' : 'start' }">
           <LinkTo :link="{ name: item.name, type, id: item.id }" />
+          <template v-if="item.subname">
+            <br />
+            <span class="card-subname">{{ item.subname }}</span>
+          </template>
           <br />
           <LinkTo v-if="item.subLink" :link="item.subLink" class="sublink"/>
         </div>
@@ -116,7 +120,7 @@ const getPageByType = (id) => {
   .card-name {
     font-weight: 600;
     padding-top: 6px;
-    .sublink{
+    .sublink,.card-subname{
       color: var(--color-subtext);
       font-size: 0.75em; 
     }

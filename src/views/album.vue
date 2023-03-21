@@ -1,20 +1,26 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Message from '@/components/Message'
-import { getAlbumDetail } from '@/api/music.js'
+import { getAlbumDetail, getAlbumByArtist } from '@/api/music.js'
 import { getImgUrl, formatData } from '@/utils/useTool.js'
 
 const albumDetail = ref(null)
+const artistAlbumList = ref([])
 const isLike = ref(false)
-onBeforeMount(() => {
-  const route = useRoute()
-  getAlbumDetail(`${route.params.id}`).then(res => {
-    albumDetail.value = res
+const route = useRoute()
+
+watch(()=>route.params,async (val)=>{
+  const albumData = await getAlbumDetail(`${val.id}`)
+  albumDetail.value = albumData
+  getAlbumByArtist({ id: albumData.album.artist.id, limit: 5 }).then(res => {
+    artistAlbumList.value = res.hotAlbums.map(({ id, name, picUrl, publishTime }) => ({
+      id, name, picUrl, subname: `Album · ${formatData(publishTime, 'YYYY')}`}))
   }).catch((e) => {
     Message.error(e.message)
   })
-})
+},{immediate:true})
+
 
 const joinLike = () => {
   isLike.value = !isLike.value
@@ -32,8 +38,7 @@ const joinLike = () => {
           {{ albumDetail.album.name }}
         </div>
         <div class="pl-info__creator">Album by
-          <LinkTo
-            :link="{ name: albumDetail.album.artist.name, type: $route.name, id: albumDetail.album.artist.id }" />
+          <LinkTo :link="{ name: albumDetail.album.artist.name, type: $route.name, id: albumDetail.album.artist.id }" />
         </div>
         <div class="pl-info__count">
           {{ formatData(albumDetail.album.publishTime, 'YYYY') }} · {{
@@ -61,29 +66,40 @@ const joinLike = () => {
       </div>
     </div>
     <Divide />
+    <div>
+      <div class="album-more">More by {{ albumDetail.album.artist.name }}</div>
+      <CardList :cards="artistAlbumList" type="album"></CardList>
+    </div>
   </div>
 </template>
 <style scoped lang='scss'>
 @import "@/assets/styles/playlist.scss";
 
-.playlist{
-  .pl-info__name{
+.playlist {
+  .pl-info__name {
     font-size: 3em;
   }
 }
-.album-list{
-  :deep(.pl-list__warp){
+
+.album-list {
+  :deep(.pl-list__warp) {
     padding: 16px 12px;
     margin-bottom: 4px;
   }
 
-  :deep(.pl-list__title){
+  :deep(.pl-list__title) {
     font-size: 1em;
   }
 }
-.album-copyright{
+
+.album-copyright {
   margin-top: 30px;
   font-size: 0.8em;
   color: var(--color-subtext)
+}
+.album-more{
+  margin: 20px 0;
+  font-size: 1.5em;
+  font-weight: 500;
 }
 </style>
