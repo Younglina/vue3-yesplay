@@ -153,6 +153,36 @@ export function getArtistMV(id) {
   })
 }
 
+/**
+ * 获取歌手 mv
+  说明 : 调用此接口 , 传入音乐 ids(支持多个 ids, 用 , 隔开), 可获得歌曲详情(dt为歌曲时长)
+  必选参数 : ids: 音乐 id, 如 ids=347230
+  fee: enum,
+  0: 免费或无版权
+  1: VIP 歌曲
+  4: 购买专辑
+  8: 非会员可免费播放低音质，会员可播放高音质及下载
+ */
+export function getSongDetail(ids) {
+  return axios({
+    method: 'get',
+    url: '/song/detail',
+    params: {ids}
+  })
+}
+
+/**
+ * 说明 : 调用此接口 , 传入音乐 id 可获得对应音乐的歌词 ( 不需要登录 )
+ */
+export function getLyric(id) {
+  return axios({
+    method: 'get',
+    url: '/lyric',
+    params: {id}
+  })
+}
+
+
 export const getApiByType = {
   personalized: getPersonalized,
   highquality: getHighqualityList,

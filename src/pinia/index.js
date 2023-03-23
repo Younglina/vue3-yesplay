@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia'
 
-export const useStore = defineStore('store', {
+export const usePinia = defineStore('pinia', {
   state: () => {
     return {
+      wyPlayer: null,
+      showLyric: false,
+      currentPlaying: null
     }
   }
 })

@@ -10,38 +10,37 @@ const cardList = reactive([
     loading: true,
     api: getPersonalized,
   },
-  {
-    data: [],
-    title: "新专速递",
-    type: 'album',
-    api: getAlbumNew,
-    loading: true,
-    key: 'albums',
-  },
-  {
-    data: [],
-    title: "推荐艺人",
-    type: 'artist',
-    api: getToplistArtist,
-    loading: true,
-    key: 'list',
-    subkey:'artists',
-    cardNum: 6
-  },
-  {
-    data: [],
-    title: "排行榜",
-    type: 'toplist',
-    api: getToplist,
-    loading: true,
-    key: 'list',
-    cardNum: 5,
-  },
+  // {
+  //   data: [],
+  //   title: "新专速递",
+  //   type: 'album',
+  //   api: getAlbumNew,
+  //   loading: true,
+  //   key: 'albums',
+  // },
+  // {
+  //   data: [],
+  //   title: "推荐艺人",
+  //   type: 'artist',
+  //   api: getToplistArtist,
+  //   loading: true,
+  //   key: 'list',
+  //   subkey:'artists',
+  //   cardNum: 6
+  // },
+  // {
+  //   data: [],
+  //   title: "排行榜",
+  //   type: 'toplist',
+  //   api: getToplist,
+  //   loading: true,
+  //   key: 'list',
+  //   cardNum: 5,
+  // },
 ])
 
 cardList.map(item=>{
   item.api().then(res=>{
-    console.log(item.type, res, res[item.key])
     let data = res?res[item.key]:[]
     if(item.type==='album'){
       data.map(d=>{
@@ -49,10 +48,10 @@ cardList.map(item=>{
       })
     }
     if(item.type==='artist'){
-      data = data[item.subkey].slice(6)
+      data = data[item.subkey].slice(0,6)
     }
     if(item.type==='toplist'){
-      data = data.slice(5)
+      data = data.slice(0,5)
     }
     item.data = data
     item.loading = false

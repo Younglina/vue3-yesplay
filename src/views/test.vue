@@ -14,7 +14,6 @@ onMounted(async ()=>{
       }],
     });
     await nextTick();
-    console.log(ap)
     ap.on('timeupdate', function () {
       const el = document.querySelector('.aplayer-lrc-current');
       if (el){
@@ -24,18 +23,16 @@ onMounted(async ()=>{
         });
       }
     });
-    const elements = document.querySelector('.aplayer-lrc-contents').children
-    console.dir(elements)
-    console.log(ap.lrc.current)
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].addEventListener("click", function() {
-        console.log(elements[i].innerHTML);
+    const lrcContainer = document.querySelector('.aplayer .aplayer-lrc');
+    lrcContainer.addEventListener('click', (event) => {
+      console.dir(event.target)
+      if (event.target.tagName === 'P') {
         const a = ap.lrc.current.find(item=>item[1]===elements[i].innerHTML)
         if(a){
           ap.seek(a[0])
         }
-      });
-    }
+      }
+    });
 })
 </script>
 <template>
@@ -94,6 +91,7 @@ onMounted(async ()=>{
       border-radius: 12px;
       opacity: 0.6;
       transition: translate .5s ease-out;
+      cursor: pointer;
       &:hover{
         background-color: var(--color-bg-gray);
       }

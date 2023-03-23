@@ -27,6 +27,7 @@ const radiusStyle = computed(() => {
 
 const router = useRouter()
 const getPageByType = (id) => {
+  console.log(props.type,id)
   router.push(`/${props.type}/${id}`)
 }
 </script>
