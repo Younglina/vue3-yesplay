@@ -1,38 +1,120 @@
 <script setup>
-import axios from "axios";
-import ContextMenu from "@/components/ContextMenu";
-import { ContentLoader } from 'vue-content-loader'
-const showContextMenu = (e) => {
-  e.preventDefault();
-  axios
-    .get(
-      "https://www.fastmock.site/mock/6b16c722604e6f9b79e16f7ec3a768d4/vue3vite/playlist/detail"
-    )
-    .then((res) => {
-      ContextMenu(e, res.data.playlist.tracks[0]);
+import 'APlayer/dist/APlayer.min.css';
+import APlayer from 'APlayer';
+import { onMounted, nextTick} from 'vue';
+
+onMounted(async ()=>{
+  const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    lrcType: 1,
+    autoplay: true,
+    audio: [{
+        lrc: "[00:00.000] 作词 : 清彦\n[00:01.000] 作曲 : 李建衡\n[00:12.940]原唱：HITA\n[00:15.600]演唱：你的二智bb\n[00:17.520]\n[00:21.780]戏一折 水袖起落\n[00:27.870]唱悲欢唱离合 无关我\n[00:35.890]扇开合 锣鼓响又默\n[00:42.080]戏中情戏外人 凭谁说\n[00:49.190]惯将喜怒哀乐都融入粉墨\n[00:55.140]陈词唱穿又如何 白骨青灰皆我\n[01:03.640]乱世浮萍忍看烽火燃山河\n[01:08.879]位卑未敢忘忧国 哪怕无人知我\n[01:16.799]台下人走过 不见旧颜色\n[01:24.080]台上人唱着 心碎离别歌\n[01:31.230]情字难落墨 她唱须以血来和\n[01:38.319]戏幕起 戏幕落 谁是客\n[02:13.159]\n[02:14.719]戏一折 水袖起落\n[02:20.659]唱悲欢唱离合 无关我\n[02:28.689]扇开合 锣鼓响又默\n[02:35.180]戏中情戏外人 凭谁说\n[02:42.120]惯将喜怒哀乐都融入粉墨\n[02:47.780]陈词唱穿又如何 白骨青灰皆我\n[02:56.550]乱世浮萍忍看烽火燃山河\n[03:02.009]位卑未敢忘忧国 哪怕无人知我\n[03:09.840]台下人走过 不见旧颜色\n[03:16.970]台上人唱着 心碎离别歌\n[03:23.849]情字难落墨 她唱须以血来和\n[03:31.240]戏幕起 戏幕落 谁是客\n[03:37.819]你方唱罢我登场\n[03:45.190]莫嘲风月戏 莫笑人荒唐\n[03:52.090]也曾问青黄也曾铿锵唱兴亡\n[03:59.750]道无情 道有情 怎思量\n[04:05.979]\n[04:07.599]总策划：沈峻峻\n[04:08.509]企划：胡璇\n[04:09.509]统筹：李喆渊\n[04:10.289]混音：Wuli包子（异新音乐）\n[04:10.439]编曲：1AN（异新音乐）\n",
+        url: "https://music.163.com/song/media/outer/url?id=1377748865"
+      }],
     });
-};
+    await nextTick();
+    console.log(ap)
+    ap.on('timeupdate', function () {
+      const el = document.querySelector('.aplayer-lrc-current');
+      if (el){
+        el.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    });
+    const elements = document.querySelector('.aplayer-lrc-contents').children
+    console.dir(elements)
+    console.log(ap.lrc.current)
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].addEventListener("click", function() {
+        console.log(elements[i].innerHTML);
+        const a = ap.lrc.current.find(item=>item[1]===elements[i].innerHTML)
+        if(a){
+          ap.seek(a[0])
+        }
+      });
+    }
+})
 </script>
 <template>
-  <content-loader
-    width="100%"
-    height="80vh"
-    primaryColor="#f3f3f3"
-    secondaryColor="#cccccc"
-  >
-    <rect x="0" y="0" rx="8" ry="8" width="30%" height="30%"/>
-    <rect x="35%" y="8" rx="8" ry="8" width="60%" height="28px" />
-    <rect x="35%" y="68" rx="8" ry="8" width="40%" height="28px" />
-    <rect x="35%" y="108" rx="8" ry="8" width="55%" height="28px" />
-    <rect x="35%" y="158" rx="8" ry="8" width="58px" height="38px" />
-    <rect x="43%" y="158" rx="8" ry="8" width="58px" height="38px" />
-    <rect x="51%" y="158" rx="8" ry="8" width="58px" height="38px" />
-
-    <rect x="0" y="45%" rx="8" ry="8" width="10%" height="10%"/>
-    <rect x="12%" y="46%" rx="8" ry="8" width="15%" height="20px" />
-    <rect x="12%" y="50%" rx="8" ry="8" width="10%" height="20px" />
-    <rect x="42%" y="48%" rx="8" ry="8" width="20%" height="20px" />
-    <rect x="75%" y="48%" rx="8" ry="8" width="20%" height="20px" />
-  </content-loader>
+  <div class="player">
+    <div class="player-info">1234444</div>
+    <div  class="player-lrc">
+      <div id="aplayer"></div>
+    </div>
+  </div>
 </template>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.player{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 249;
+  display: flex;
+  background-color: #fff;
+  &-info{
+    display: flex;
+    flex: 1;
+    z-index: 1;
+  }
+  &-lrc{
+    display: flex;
+    flex: 1;
+    z-index: 1;
+  }
+}
+:deep(#aplayer){
+  font-family: Arial,Helvetica,sans-serif;
+  margin: 0px;
+  box-shadow: unset;
+  border-radius: 0px;
+  .aplayer-info{
+    padding: 0;
+    margin-left: 0;
+    margin-right: 24px;
+  }
+  .aplayer-lrc{
+    height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+    &:after{
+      display: none;
+    }
+    p{
+      font-weight: 600;
+      font-size: 1.5em;
+      line-height: unset!important;
+      height: auto!important;
+      padding: 12px 20px !important;
+      margin: 4px 0 !important;
+      border-radius: 12px;
+      opacity: 0.6;
+      transition: translate .5s ease-out;
+      &:hover{
+        background-color: var(--color-bg-gray);
+      }
+    }
+    .aplayer-lrc-current{
+      opacity: 1 !important;
+    }
+  }
+  .aplayer-lrc::-webkit-scrollbar {
+    display: none;
+  }
+  .aplayer-lrc-contents{
+    transform: translateY(0) !important;
+  }
+  .aplayer-lrc-contents p{
+    &:first-child{
+      margin-top: 50vh!important;
+    }
+  }
+  .aplayer-list,.aplayer-pic,.aplayer-music,.aplayer-controller,.aplayer-notice{
+    display: none;
+  }
+}
+</style>
