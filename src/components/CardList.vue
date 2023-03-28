@@ -33,11 +33,11 @@ const getPageByType = (id) => {
 </script>
 
 <template>
+  <div v-if="title" class="title">
+    {{ title }}
+  </div>
   <WyLoading v-if="loading" />
   <template v-else>
-    <div v-if="title" class="title">
-      {{ title }}
-    </div>
     <div v-if="cards.length > 0" class="list" :style="listStyle">
       <div v-for="item in cards" :key="item.id" class="card" @click="getPageByType(item.id)">
         <div class="card-img" :style="radiusStyle">
@@ -85,6 +85,7 @@ const getPageByType = (id) => {
 
     &:hover {
       box-shadow: 0 2px 10px 10px rgba(0, 0, 0, 0.1);
+
       .play-btn {
         visibility: visible;
       }
@@ -127,7 +128,9 @@ const getPageByType = (id) => {
   .card-name {
     font-weight: 600;
     padding-top: 6px;
-    .sublink,.card-subname{
+
+    .sublink,
+    .card-subname {
       color: var(--color-subtext);
       font-size: 0.75em;
     }
