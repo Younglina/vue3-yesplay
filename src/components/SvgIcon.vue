@@ -1,11 +1,5 @@
-<template>
-  <svg aria-hidden="true" class="svg-icon" :style="{color: color}">
-    <use :href="symbolId" :fill="color"/>
-  </svg>
-</template>
-
 <script>
-import { defineComponent, computed } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SvgIcon',
@@ -29,6 +23,13 @@ export default defineComponent({
   },
 })
 </script>
+
+<template>
+  <svg aria-hidden="true" class="svg-icon" :style="{ color }">
+    <use :href="symbolId" :fill="color" />
+  </svg>
+</template>
+
 <style lang="scss" scoped>
 .svg-icon{
   width: 1.4em;

@@ -2,12 +2,12 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  margin: { default: '12'},
-  bgcolor: { default: 'var(--color-bg-gray)'},
-  height: { default: '1px'},
-  width: { default: '100%'},
+  margin: { default: '12' },
+  bgcolor: { default: 'var(--color-bg-gray)' },
+  height: { default: '1px' },
+  width: { default: '100%' },
 })
-const styles = computed(()=>{
+const styles = computed(() => {
   return {
     margin: `${props.margin}px 0`,
     backgroundColor: props.bgcolor,
@@ -16,8 +16,10 @@ const styles = computed(()=>{
   }
 })
 </script>
+
 <template>
-<div class="divide" :style="styles"></div>
+  <div class="divide" :style="styles" />
 </template>
+
 <style scoped lang='scss'>
 </style>

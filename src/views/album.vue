@@ -1,9 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue';
-import { onBeforeRouteLeave, useRoute } from 'vue-router';
+import { ref, watch } from 'vue'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import Message from '@/components/Message'
-import { getAlbumDetail, getAlbumByArtist } from '@/api/music.js'
-import { getImgUrl, formatData } from '@/utils/useTool.js'
+import { getAlbumByArtist, getAlbumDetail } from '@/api/music.js'
+import { formatData, getImgUrl } from '@/utils/useTool.js'
 import ContentLoader from '@/components/ContentLoader.vue'
 
 const albumDetail = ref(null)
@@ -11,27 +11,26 @@ const artistAlbumList = ref([])
 const isLike = ref(false)
 const route = useRoute()
 
-const routeWatch = watch(()=>route.params,async (val)=>{
+const routeWatch = watch(() => route.params, async (val) => {
   albumDetail.value = null
   const albumData = await getAlbumDetail(`${val.id}`)
   albumDetail.value = albumData
-  getAlbumByArtist({ id: albumData.album.artist.id, limit: 5 }).then(res => {
-    artistAlbumList.value = res.hotAlbums.map(({ id, name, picUrl, publishTime }) => ({
-      id, name, picUrl, subname: `Album · ${formatData(publishTime, 'YYYY')}`}))
+  getAlbumByArtist({ id: albumData.album.artist.id, limit: 5 }).then((res) => {
+    artistAlbumList.value = res.hotAlbums.map(({ id, name, picUrl, publishTime }) => ({ id, name, picUrl, subname: `Album · ${formatData(publishTime, 'YYYY')}` }))
   }).catch((e) => {
     Message.error(e.message)
   })
-},{immediate:true})
+}, { immediate: true })
 
-onBeforeRouteLeave(()=>{
+onBeforeRouteLeave(() => {
   routeWatch()
 })
 
 const joinLike = () => {
   isLike.value = !isLike.value
 }
-
 </script>
+
 <template>
   <div v-if="albumDetail" class="playlist">
     <div class="pl-info">
@@ -42,13 +41,17 @@ const joinLike = () => {
         <div class="pl-info__name">
           {{ albumDetail.album.name }}
         </div>
-        <div class="pl-info__creator">Album by
+        <div class="pl-info__creator">
+          Album by
           <LinkTo :link="{ name: albumDetail.album.artist.name, type: $route.name, id: albumDetail.album.artist.id }" />
         </div>
         <div class="pl-info__count">
           {{ formatData(albumDetail.album.publishTime, 'YYYY') }} · {{
-            albumDetail.songs.length }}首歌</div>
-        <div class="pl-info__desc">{{ albumDetail.album.description }}</div>
+            albumDetail.songs.length }}首歌
+        </div>
+        <div class="pl-info__desc">
+          {{ albumDetail.album.description }}
+        </div>
         <div class="pl-info__btns">
           <ButtonIcon class="pl-info__play">
             <SvgIcon name="play" color="var(--color-primary)" />
@@ -72,12 +75,15 @@ const joinLike = () => {
     </div>
     <Divide />
     <div>
-      <div class="album-more">More by {{ albumDetail.album.artist.name }}</div>
-      <CardList :cards="artistAlbumList" type="album"></CardList>
+      <div class="album-more">
+        More by {{ albumDetail.album.artist.name }}
+      </div>
+      <CardList :cards="artistAlbumList" type="album" />
     </div>
   </div>
-  <ContentLoader v-else/>
+  <ContentLoader v-else />
 </template>
+
 <style scoped lang='scss'>
 @import "@/assets/styles/playlist.scss";
 

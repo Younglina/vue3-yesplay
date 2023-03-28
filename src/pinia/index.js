@@ -5,7 +5,7 @@ export const usePinia = defineStore('pinia', {
     return {
       wyPlayer: null,
       showLyric: false,
-      currentPlaying: null
+      currentPlaying: null,
     }
-  }
+  },
 })

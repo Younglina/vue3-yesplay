@@ -1,10 +1,10 @@
 <script setup>
-import { getPersonalized, getAlbumNew, getToplistArtist, getToplist } from '@/api/music.js'
-import { reactive} from 'vue';
+import { reactive } from 'vue'
+import { getPersonalized } from '@/api/music.js'
 const cardList = reactive([
   {
     data: [],
-    title: "推荐歌单",
+    title: '推荐歌单',
     type: 'playlist',
     key: 'result',
     loading: true,
@@ -39,29 +39,29 @@ const cardList = reactive([
   // },
 ])
 
-cardList.map(item=>{
-  item.api().then(res=>{
-    let data = res?res[item.key]:[]
-    if(item.type==='album'){
-      data.map(d=>{
-        d.subLink={ type: 'artist', id: d.artist.id, name: d.artist.name}
+cardList.map((item) => {
+  item.api().then((res) => {
+    let data = res ? res[item.key] : []
+    if (item.type === 'album') {
+      data.map((d) => {
+        d.subLink = { type: 'artist', id: d.artist.id, name: d.artist.name }
       })
     }
-    if(item.type==='artist'){
-      data = data[item.subkey].slice(0,6)
-    }
-    if(item.type==='toplist'){
-      data = data.slice(0,5)
-    }
+    if (item.type === 'artist')
+      data = data[item.subkey].slice(0, 6)
+
+    if (item.type === 'toplist')
+      data = data.slice(0, 5)
+
     item.data = data
     item.loading = false
-  }).catch(err=>{
+  }).catch((err) => {
     console.log(err)
     item.loading = false
   })
 })
-
 </script>
+
 <template>
-  <CardList v-for="val in cardList" :loading="val.loading" :key="val.title" :title="val.title" :type="val.type" :cardNum="val.cardNum" :cards="val.data"></CardList>
+  <CardList v-for="val in cardList" :key="val.title" :loading="val.loading" :title="val.title" :type="val.type" :card-num="val.cardNum" :cards="val.data" />
 </template>

@@ -1,23 +1,23 @@
 <script setup>
-import { ref, computed, onMounted, nextTick } from "vue";
-import { getOffsetOrSpace, getLastOffset } from './instance.js'
+import { computed, nextTick, onMounted, ref } from 'vue'
+import { getLastOffset, getOffsetOrSpace } from './instance.js'
 
 const props = defineProps({
   id: { type: String, require: true },
   type: { type: String, default: 'info' },
-  message: { type: String, default: "message" },
+  message: { type: String, default: 'message' },
   duration: { type: Number, default: 3000 },
   onClose: { type: Function },
   offset: { type: Number, default: 12 },
-  zIndex: { type: Number, default: 2000 }
+  zIndex: { type: Number, default: 2000 },
 })
 
-const emits = defineEmits({ destroy: () => true }) // 当组件消失时抛出卸载钩子
+defineEmits({ destroy: () => true }) // 当组件消失时抛出卸载钩子
 
-const visible = ref(false);
+const visible = ref(false)
 const durationTime = ref(null) // 控制关闭组件的定时器
 const messageRef = ref() // 组件ref
-const height = ref(0)  // 组件整体高度，通过上面的ref获取
+const height = ref(0) // 组件整体高度，通过上面的ref获取
 
 function startTimer() {
   if (props.duration !== 0) {
@@ -36,7 +36,7 @@ function clearTimer() {
 // 可能会同时存在多个message，所以需要控制它们之间的offset
 const lastOffset = computed(() => getLastOffset(props.id)) // 获取当前组件前一个message的 bottom值
 const offset = computed(
-  () => getOffsetOrSpace(props.id) + lastOffset.value
+  () => getOffsetOrSpace(props.id) + lastOffset.value,
 )
 const bottom = computed(() => height.value + offset.value)
 const customStyle = computed(() => ({
@@ -49,24 +49,28 @@ const customStyle = computed(() => ({
 defineExpose({
   visible,
   close,
-  bottom
+  bottom,
 })
-onMounted(async ()=>{
+onMounted(async () => {
   startTimer()
   visible.value = true
   await nextTick()
   height.value = messageRef.value ? messageRef.value.getBoundingClientRect().height : 54
 })
 </script>
+
 <template>
   <!-- 监听transtition组件的钩子，离开前可以触发自定义的close方法，离开后把整个组件卸载 -->
   <transition @before-leave="onClose" @after-leave="$emit('destroy')">
-    <div v-show="visible" :class="[type, 'message']" :style="customStyle" ref="messageRef" @mouseenter="clearTimer"
-      @mouseleave="startTimer">
+    <div
+      v-show="visible" ref="messageRef" class="message" :class="[type]" :style="customStyle" @mouseenter="clearTimer"
+      @mouseleave="startTimer"
+    >
       <span>{{ message }}</span>
     </div>
   </transition>
 </template>
+
 <style scoped lang="scss">
 .message {
   position: fixed;

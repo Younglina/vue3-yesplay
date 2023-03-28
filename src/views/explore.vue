@@ -1,8 +1,8 @@
 <script setup>
-import { staticData } from '@/utils/useData.js';
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { staticData } from '@/utils/useData.js'
 import { getApiByType } from '@/api/music'
-import { ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 
 const hotCat = [...staticData.playListTag.filter(item => item.hot).slice(0, 10), { name: 'more', icon: 'more' }]
 const router = useRouter()
@@ -14,11 +14,11 @@ const loading = ref(false)
 watch(() => route.query, ({ category, apiType }) => {
   loading.value = true
   currentCat.value = category || '全部'
-  getApiByType[apiType || 'playList'](apiType ? '' : { cat: category }).then(res => {
+  getApiByType[apiType || 'playList'](apiType ? '' : { cat: category }).then((res) => {
     console.log(res)
     cardData.value = res.playlists || res.list || res.result
     loading.value = false
-  }).catch(err => {
+  }).catch((err) => {
     console.log(err)
     loading.value = false
   })
@@ -32,13 +32,15 @@ const changeCat = ({ name, apiType, icon }) => {
     loading.value = true
     currentCat.value = name || '全部'
     templateCur.value = name
-    router.push(`/explore?category=${name}${apiType ? '&apiType=' + apiType : ''}`)
-  } else {
+    router.push(`/explore?category=${name}${apiType ? `&apiType=${apiType}` : ''}`)
+  }
+  else {
     showAllCats.value = !showAllCats.value
     if (showAllCats.value) {
       templateCur.value = currentCat.value
       currentCat.value = icon
-    } else {
+    }
+    else {
       currentCat.value = templateCur.value
     }
   }
@@ -48,27 +50,36 @@ const getCatByType = (type) => {
   return staticData.playListTag.filter(item => (item.category === type && !hotCat.some(hc => hc.name === item.name))).map(item => item.name)
 }
 </script>
+
 <template>
   <h1>发现</h1>
   <div class="hot-cats">
-    <ButtonIcon v-for="item in hotCat" :key="item.name" @click="changeCat(item)"
-      :class="item.name === currentCat ? 'active' : ''">
+    <ButtonIcon
+      v-for="item in hotCat" :key="item.name" :class="item.name === currentCat ? 'active' : ''"
+      @click="changeCat(item)"
+    >
       <span v-if="!item.icon" class="cat-name">{{ item.name }}</span>
       <SvgIcon v-else :name="item.icon" :color="showAllCats ? 'var(--color-primary)' : '#666'" />
     </ButtonIcon>
   </div>
   <div v-show="showAllCats" class="all-cats">
-    <div v-for="(val, key) in staticData.playListCategories" class="all-cats-item" :key="val">
-      <div class="cat-type">{{ val }}</div>
+    <div v-for="(val, key) in staticData.playListCategories" :key="val" class="all-cats-item">
+      <div class="cat-type">
+        {{ val }}
+      </div>
       <div class="cat-name">
-        <ButtonIcon v-for="cat in getCatByType(+key)" :key="cat"
+        <ButtonIcon
+          v-for="cat in getCatByType(+key)" :key="cat"
           :class="(cat === currentCat || cat === templateCur) ? 'active' : ''" @click="changeCat({ name: cat })"
-          >{{ cat }}</ButtonIcon>
+        >
+          {{ cat }}
+        </ButtonIcon>
       </div>
     </div>
   </div>
   <CardList :cards="cardData" :loading="loading" />
 </template>
+
 <style scoped lang='scss'>
 h1 {
   font-size: 3em;

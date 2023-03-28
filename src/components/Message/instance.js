@@ -6,36 +6,39 @@ const instances = shallowReactive([])
 
 const closeMessage = (instance) => {
   const idx = instances.indexOf(instance)
-  if (idx === -1) return
+  if (idx === -1)
+    return
+
   instances.splice(idx, 1)
   const { handler } = instance
   handler.close()
 }
 
 export const getInstance = (id) => {
-  const idx = instances.findIndex((instance) => instance.id === id)
+  const idx = instances.findIndex(instance => instance.id === id)
   const current = instances[idx]
   let prev
-  if (idx > 0) {
+  if (idx > 0)
     prev = instances[idx - 1]
-  }
+
   return { current, prev }
 }
 
 export const getLastOffset = (id) => {
   const { prev } = getInstance(id)
-  if (!prev) return 0
+  if (!prev)
+    return 0
   return prev.vm.exposed.bottom.value
 }
 
-export const getOffsetOrSpace = (id, offset) => {
-  const idx = instances.findIndex((instance) => instance.id === id)
+export const getOffsetOrSpace = (id) => {
+  const idx = instances.findIndex(instance => instance.id === id)
   return idx > 0 ? 16 : 60
 }
 
 const createMessage = (
   options,
-  context
+  context,
 ) => {
   const id = `message_${seed++}`
   const userOnClose = options.onClose
@@ -47,6 +50,7 @@ const createMessage = (
     id,
     onClose: () => {
       userOnClose?.()
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       closeMessage(instance)
     },
     onDestroy: () => {
@@ -55,7 +59,7 @@ const createMessage = (
   }
   const vnode = h(
     MessageContext,
-    props
+    props,
   )
   vnode.appContext = context || message._context
 
@@ -75,7 +79,7 @@ const createMessage = (
     vnode,
     vm,
     handler,
-    props: props,
+    props,
   }
 
   return instance
@@ -85,8 +89,8 @@ const mergeOptions = (options) => {
   return typeof options === 'string' ? { message: options } : options
 }
 
-const message = (options, context) => {
-  let config = mergeOptions(options)
+function message(options, context) {
+  const config = mergeOptions(options)
   const instance = createMessage(config, context)
   instances.push(instance)
   return instance.handler
@@ -94,7 +98,7 @@ const message = (options, context) => {
 const messageTypes = ['success', 'warning', 'info', 'error']
 messageTypes.forEach((type) => {
   message[type] = (options = {}) => {
-    let config = mergeOptions(options)
+    const config = mergeOptions(options)
     return message({ ...config, type }, null)
   }
 })

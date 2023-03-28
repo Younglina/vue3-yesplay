@@ -1,13 +1,15 @@
 <script setup>
 defineProps({
-  radius: {default: '6px'}
+  radius: { default: '6px' },
 })
 </script>
+
 <template>
-  <button class="button-icon" :style="{borderRadius: radius}">
-    <slot></slot>
+  <button class="button-icon" :style="{ borderRadius: radius }">
+    <slot />
   </button>
 </template>
+
 <style scoped lang='scss'>
 button {
   @include flex-center;

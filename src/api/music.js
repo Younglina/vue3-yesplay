@@ -6,7 +6,7 @@ import axios from '@/utils/axios.js'
  * 接口地址 : /personalized
  * 调用例子 : /personalized?limit=1
  */
-export function getPersonalized(limit=10) {
+export function getPersonalized(limit = 10) {
   return axios({
     method: 'get',
     url: '/personalized',
@@ -24,7 +24,7 @@ export function getAlbumNew() {
   return axios({
     method: 'get',
     url: '/album/new',
-    params: {limit:10, offset:0, area:'all'},
+    params: { limit: 10, offset: 0, area: 'all' },
   })
 }
 
@@ -40,7 +40,7 @@ export function getToplistArtist(params) {
   return axios({
     method: 'get',
     url: '/toplist/artist',
-    params: params,
+    params,
   })
 }
 
@@ -51,7 +51,7 @@ export function getToplist(params) {
   return axios({
     method: 'get',
     url: '/toplist',
-    params: params,
+    params,
   })
 }
 
@@ -67,7 +67,7 @@ export function getTopPlayList(params) {
   return axios({
     method: 'get',
     url: '/top/playlist',
-    params: params
+    params,
   })
 }
 
@@ -82,13 +82,13 @@ export function getHighqualityList(params) {
   return axios({
     method: 'get',
     url: '/top/playlist/highquality',
-    params: params
+    params,
   })
 }
 
 /**
  * 歌单详情
- 说明 : 歌单能看到歌单名字, 但看不到具体歌单内容 , 调用此接口 , 
+ 说明 : 歌单能看到歌单名字, 但看不到具体歌单内容 , 调用此接口 ,
  传入歌单 id, 可 以获取对应歌单内的所有的音乐(未登录状态只能获取不完整的歌单,登录后是完整的)，
  但是返回的 trackIds 是完整的，tracks 则是不完整的，
  可拿全部 trackIds 请求一次 song/detail 接口获取所有歌曲的详情
@@ -97,7 +97,7 @@ export function getPlayListDetail(id) {
   return axios({
     method: 'get',
     url: '/playlist/detail',
-    params: {id}
+    params: { id },
   })
 }
 
@@ -109,7 +109,7 @@ export function getAlbumDetail(id) {
   return axios({
     method: 'get',
     url: '/album',
-    params: {id}
+    params: { id },
   })
 }
 
@@ -124,7 +124,7 @@ export function getAlbumByArtist(params) {
   return axios({
     method: 'get',
     url: '/artist/album',
-    params
+    params,
   })
 }
 
@@ -136,20 +136,20 @@ export function getArtist(id) {
   return axios({
     method: 'get',
     url: '/artists',
-    params: {id}
+    params: { id },
   })
 }
 
 /**
  * 获取歌手 mv
-  说明 : 调用此接口 , 传入歌手 id, 可获得歌手 mv 信息 
+  说明 : 调用此接口 , 传入歌手 id, 可获得歌手 mv 信息
   具体 mv 播放地址可调 用/mv传入此接口获得的 mvid 来拿到 , 如 : /artist/mv?id=6452,/mv?mvid=5461064
  */
 export function getArtistMV(id) {
   return axios({
     method: 'get',
     url: '/artist/mv',
-    params: {id}
+    params: { id },
   })
 }
 
@@ -167,7 +167,7 @@ export function getSongDetail(ids) {
   return axios({
     method: 'get',
     url: '/song/detail',
-    params: {ids}
+    params: { ids },
   })
 }
 
@@ -178,10 +178,9 @@ export function getLyric(id) {
   return axios({
     method: 'get',
     url: '/lyric',
-    params: {id}
+    params: { id },
   })
 }
-
 
 export const getApiByType = {
   personalized: getPersonalized,

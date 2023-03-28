@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { getImgUrl } from '@/utils/useTool.js'
 
@@ -9,50 +9,53 @@ const props = defineProps({
   type: { type: String },
   loading: { type: Boolean, default: false },
   cardNum: { default: 5 },
-  gap: { default: '40px 22px' }
+  gap: { default: '40px 22px' },
 })
 
 const listStyle = computed(() => {
   return {
     'grid-template-columns': `repeat(${props.cardNum}, 1fr)`,
-    gap: props.gap,
-  };
+    'gap': props.gap,
+  }
 })
 
 const radiusStyle = computed(() => {
   return {
-    'border-radius': props.type === 'artist' ? '50%' : '0.75em'
+    'border-radius': props.type === 'artist' ? '50%' : '0.75em',
   }
 })
 
 const router = useRouter()
 const getPageByType = (id) => {
-  console.log(props.type,id)
+  console.log(props.type, id)
   router.push(`/${props.type}/${id}`)
 }
 </script>
+
 <template>
   <WyLoading v-if="loading" />
   <template v-else>
-    <div v-if="title" class="title">{{ title }}</div>
-    <div class="list" :style="listStyle" v-if="cards.length > 0">
+    <div v-if="title" class="title">
+      {{ title }}
+    </div>
+    <div v-if="cards.length > 0" class="list" :style="listStyle">
       <div v-for="item in cards" :key="item.id" class="card" @click="getPageByType(item.id)">
         <div class="card-img" :style="radiusStyle">
-          <img :src="getImgUrl(item)" loading="lazy" :style="radiusStyle" />
+          <img :src="getImgUrl(item)" loading="lazy" :style="radiusStyle">
           <div class="play-warp">
             <button class="play-btn">
-              <SvgIcon name="play" color="#ffffff"/>
+              <SvgIcon name="play" color="#ffffff" />
             </button>
           </div>
         </div>
         <div class="card-name" :style="{ 'text-align': type === 'artist' ? 'center' : 'start' }">
           <LinkTo :link="{ name: item.name, type, id: item.id }" />
           <template v-if="item.subname">
-            <br />
+            <br>
             <span class="card-subname">{{ item.subname }}</span>
           </template>
-          <br />
-          <LinkTo v-if="item.subLink" :link="item.subLink" class="sublink"/>
+          <br>
+          <LinkTo v-if="item.subLink" :link="item.subLink" class="sublink" />
         </div>
       </div>
     </div>
@@ -62,6 +65,7 @@ const getPageByType = (id) => {
     </div>
   </template>
 </template>
+
 <style scoped lang='scss'>
 .title {
   font-size: 1.5em;
@@ -125,7 +129,7 @@ const getPageByType = (id) => {
     padding-top: 6px;
     .sublink,.card-subname{
       color: var(--color-subtext);
-      font-size: 0.75em; 
+      font-size: 0.75em;
     }
   }
 }
@@ -137,4 +141,5 @@ const getPageByType = (id) => {
     width: 15vw;
     height: 15vw;
   }
-}</style>
+}
+</style>

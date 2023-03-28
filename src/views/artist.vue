@@ -1,9 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue';
-import { useRoute, onBeforeRouteLeave } from 'vue-router';
+import { ref, watch } from 'vue'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import Message from '@/components/Message'
-import { getArtist, getAlbumByArtist, getArtistMV } from '@/api/music.js'
-import { getImgUrl, formatData } from '@/utils/useTool.js'
+import { getAlbumByArtist, getArtist, getArtistMV } from '@/api/music.js'
+import { formatData, getImgUrl } from '@/utils/useTool.js'
 import ContentLoader from '@/components/ContentLoader.vue'
 
 const artistDetail = ref(null)
@@ -17,28 +17,28 @@ const route = useRoute()
 const routeWatch = watch(() => route.params, async (val) => {
   artistDetail.value = null
   const artistData = await getArtist(val.id)
-  artistData.hotSongs = artistData.hotSongs.map(item => {
+  artistData.hotSongs = artistData.hotSongs.map((item) => {
     return {
       id: item.id,
       name: item.name,
       picUrl: item.al.picUrl,
       alId: item.al.id,
-      alName: item.al.name
+      alName: item.al.name,
     }
   })
   artistDetail.value = artistData
-  getAlbumByArtist({ id: val.id }).then(res => {
+  getAlbumByArtist({ id: val.id }).then((res) => {
     artistAlbumList.value = res.hotAlbums.map(({ id, name, picUrl, publishTime }) => ({
-      id, name, picUrl, subname: `${formatData(publishTime, 'YYYY')}`
+      id, name, picUrl, subname: `${formatData(publishTime, 'YYYY')}`,
     }))
     albumLoading.value = false
   }).catch((e) => {
     Message.error(e.message)
     albumLoading.value = false
   })
-  getArtistMV(val.id).then(res => {
+  getArtistMV(val.id).then((res) => {
     artistMVList.value = res.mvs.map(({ id, name, imgurl, publishTime }) => ({
-      id, name, imgurl, subname: `${formatData(publishTime, 'YYYY')}`
+      id, name, imgurl, subname: `${formatData(publishTime, 'YYYY')}`,
     }))
     mvsLoading.value = false
   }).catch((e) => {
@@ -47,15 +47,15 @@ const routeWatch = watch(() => route.params, async (val) => {
   })
 }, { immediate: true })
 
-onBeforeRouteLeave(()=>{
+onBeforeRouteLeave(() => {
   routeWatch()
 })
 
 const joinLike = () => {
   isLike.value = !isLike.value
 }
-
 </script>
+
 <template>
   <div v-if="artistDetail" class="playlist">
     <div class="pl-info">
@@ -74,7 +74,9 @@ const joinLike = () => {
           {{ artistDetail.artist.albumSize }}张专辑 ·
           {{ artistDetail.artist.mvSize }}张专辑
         </div>
-        <div class="pl-info__desc">{{ artistDetail.artist.briefDesc }}</div>
+        <div class="pl-info__desc">
+          {{ artistDetail.artist.briefDesc }}
+        </div>
         <div class="pl-info__btns">
           <ButtonIcon class="pl-info__play">
             <SvgIcon name="play" color="var(--color-primary)" />
@@ -90,12 +92,16 @@ const joinLike = () => {
       </div>
     </div>
     <div class="list-warp">
-      <div class="list-warp-title">热门歌曲</div>
+      <div class="list-warp-title">
+        热门歌曲
+      </div>
       <div class="hot-songs">
         <div v-for="item in artistDetail.hotSongs.slice(0, 12)" :key="item.id" class="hot-songs__items">
           <img :src="getImgUrl(item)" loading="lazy" alt="hotsong">
           <div>
-            <div class="hot-songs__name">{{ item.name }}</div>
+            <div class="hot-songs__name">
+              {{ item.name }}
+            </div>
             <div class="hot-songs__subname">
               <LinkTo :link="{ id: item.alId, name: item.alName, type: 'album' }" />
             </div>
@@ -104,16 +110,21 @@ const joinLike = () => {
       </div>
     </div>
     <div class="list-warp">
-      <div class="list-warp-title">专辑</div>
-      <CardList :cards="artistAlbumList" :loading="albumLoading" type="album"></CardList>
+      <div class="list-warp-title">
+        专辑
+      </div>
+      <CardList :cards="artistAlbumList" :loading="albumLoading" type="album" />
     </div>
     <div class="list-warp">
-      <div class="list-warp-title">MVs</div>
-      <CardList :cards="artistMVList" :loading="mvsLoading" type="mv"></CardList>
+      <div class="list-warp-title">
+        MVs
+      </div>
+      <CardList :cards="artistMVList" :loading="mvsLoading" type="mv" />
     </div>
   </div>
   <ContentLoader v-else />
 </template>
+
 <style scoped lang='scss'>
 @import "@/assets/styles/playlist.scss";
 
@@ -189,4 +200,5 @@ const joinLike = () => {
   margin: 20px 0;
   font-size: 1.5em;
   font-weight: 600;
-}</style>
+}
+</style>

@@ -1,12 +1,13 @@
 <script setup>
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { getImgUrl } from '@/utils/useTool.js'
-import { computed, onMounted, ref, nextTick } from 'vue';
 const props = defineProps({
   data: { default: null },
-  onClose: { type: Function, default: () => { } }
+  onClose: { type: Function, default: () => { } },
 })
 const showData = computed(() => {
-  let data = {}, pd = props.data
+  const data = {}
+  const pd = props.data
   if (pd) {
     data.name = pd.name
     data.id = pd.id
@@ -22,10 +23,10 @@ const showData = computed(() => {
 const contextMenu = ref(null)
 onMounted(async () => {
   await nextTick()
-  contextMenu.value.focus();
+  contextMenu.value.focus()
 })
 
-const clickFunc = (type) => {
+const clickFunc = () => {
   props.onClose()
 }
 
@@ -33,41 +34,41 @@ const actions = [
   '',
   {
     label: '播放',
-    type: 'play'
+    type: 'play',
   },
   {
     label: '添加到队列',
-    type: '添加到队列'
+    type: '添加到队列',
   },
   '',
   {
     label: '添加到我喜欢的音乐',
-    type: '添加到我喜欢的音乐'
+    type: '添加到我喜欢的音乐',
   },
   {
     label: '添加到歌单',
     type: '添加到歌单',
-    menuType: 'play'
+    menuType: 'play',
   },
   {
     label: '复制链接',
     type: '复制链接',
-    menuType: 'play'
+    menuType: 'play',
   },
 ]
 
 const showActions = computed(() => {
-  if(props.data){
-    if (props.data.menuType === 'play') {
+  if (props.data) {
+    if (props.data.menuType === 'play')
       return actions.filter(i => (i.menuType && i.menuType.includes('play')))
-    } else {
-      return actions
-    }
   }
+
+  return actions
 })
 </script>
+
 <template>
-  <div class="context-menu" ref="contextMenu" @blur="onClose" tabindex="-1">
+  <div ref="contextMenu" class="context-menu" tabindex="-1" @blur="onClose">
     <div v-if="showData.name" class="context-menu__info">
       <img class="context-menu__img" :src="getImgUrl(showData)" alt="">
       <div>
@@ -81,10 +82,13 @@ const showActions = computed(() => {
     </div>
     <div v-for="(item, idx) in showActions" :key="idx">
       <Divide v-if="!item" margin="0" />
-      <div v-else class="context-menu__item" @click="clickFunc(item.type)">{{ item.label }}</div>
+      <div v-else class="context-menu__item" @click="clickFunc(item.type)">
+        {{ item.label }}
+      </div>
     </div>
   </div>
 </template>
+
 <style scoped lang='scss'>
 .context-menu {
   position: absolute;

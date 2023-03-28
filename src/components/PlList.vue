@@ -1,35 +1,35 @@
 <script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import ContextMenu from '@/components/ContextMenu'
-import { getImgUrl, formatDT } from '@/utils/useTool.js'
+import { formatDT, getImgUrl } from '@/utils/useTool.js'
 import { usePinia } from '@/pinia'
 import Message from '@/components/Message'
-import { getSongDetail, getLyric } from '@/api/music.js'
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-const porps = defineProps({
-  list: { default: () => []}
+import { getLyric, getSongDetail } from '@/api/music.js'
+defineProps({
+  list: { default: () => [] },
 })
 
 const pinia = usePinia()
 const route = useRoute()
-const notAlbum = computed(()=>{
+const notAlbum = computed(() => {
   return route.name !== 'album'
 })
 
-const openMenu = (e, data, idx) => {
+const openMenu = (e, data) => {
   e.preventDefault()
   data.menuType = 'playlist'
   ContextMenu(e, data)
 }
 const playMusic = (item) => {
-  if(item.fee===1){
-    Message.warning("vip 歌曲")
+  if (item.fee === 1) {
+    Message.warning('vip 歌曲')
     return false
   }
-  getSongDetail(item.id).then(async (res)=>{
+  getSongDetail(item.id).then(async (res) => {
     const lyric = await getLyric(item.id)
     const songs = res.songs
-    if(songs&&songs.length>0){
+    if (songs && songs.length > 0) {
       const cur = {
         name: songs[0].name,
         artistName: songs[0].ar[0].name,
@@ -38,7 +38,7 @@ const playMusic = (item) => {
         picUrl: songs[0].al.picUrl,
         alName: songs[0].al.name,
         alId: songs[0].al.id,
-        lrc: lyric?.lrc?.lyric
+        lrc: lyric?.lrc?.lyric,
       }
       pinia.wyPlayer.list.add(cur)
       pinia.currentPlaying = cur
@@ -46,38 +46,43 @@ const playMusic = (item) => {
   })
 }
 </script>
-<template>
 
-<div class="pl-list">
-  <div v-for="(item, idx) in list" 
-    @click.right.native="openMenu($event, item, idx)"
-    @dblclick="playMusic(item)"
-    class="pl-list__warp" 
-    :key="item.id">
-    <img v-if="notAlbum" :src="getImgUrl(item.al)" @click="$router.push(`/album/${item.al.id}`)" class="pl-list__img" loading="lazy" alt="图片">
-    <div v-else class="pl-list__playidx">
-      <div class="pl-list__idx">{{ idx+1 }}</div>
-      <SvgIcon class="pl-list__play" name="play" size="1em" color="var(--color-primary)"/>
-    </div>
-    <div class="pl-list__name">
-      <div class="pl-list__title">
-        {{ item.name }}
-        <span>{{ item.tns?`(${item.tns[0]})`:'' }}</span>
+<template>
+  <div class="pl-list">
+    <div
+      v-for="(item, idx) in list"
+      :key="item.id"
+      class="pl-list__warp"
+      @click.right.native="openMenu($event, item, idx)"
+      @dblclick="playMusic(item)"
+    >
+      <img v-if="notAlbum" :src="getImgUrl(item.al)" class="pl-list__img" loading="lazy" alt="图片" @click="$router.push(`/album/${item.al.id}`)">
+      <div v-else class="pl-list__playidx">
+        <div class="pl-list__idx">
+          {{ idx + 1 }}
+        </div>
+        <SvgIcon class="pl-list__play" name="play" size="1em" color="var(--color-primary)" />
       </div>
-      <div v-if="notAlbum">
-        <LinkTo v-for="ars in item.ar" :key="ars.id" :link="{ ...ars, type: 'artist' }" />
+      <div class="pl-list__name">
+        <div class="pl-list__title">
+          {{ item.name }}
+          <span>{{ item.tns ? `(${item.tns[0]})` : '' }}</span>
+        </div>
+        <div v-if="notAlbum">
+          <LinkTo v-for="ars in item.ar" :key="ars.id" :link="{ ...ars, type: 'artist' }" />
+        </div>
       </div>
-    </div>
-    <div v-if="notAlbum" class="pl-list__al">
-      <LinkTo :link="{ ...item.al, type: 'album' }" />
-    </div>
-    <SvgIcon class="pl-list__heart" name="heart" color="var(--color-primary)"/>
-    <div class="pl-list__dt">
-      {{ formatDT(item.dt) }}
+      <div v-if="notAlbum" class="pl-list__al">
+        <LinkTo :link="{ ...item.al, type: 'album' }" />
+      </div>
+      <SvgIcon class="pl-list__heart" name="heart" color="var(--color-primary)" />
+      <div class="pl-list__dt">
+        {{ formatDT(item.dt) }}
+      </div>
     </div>
   </div>
-</div>
 </template>
+
 <style scoped lang='scss'>
 .pl-list {
   margin-top: 50px;

@@ -1,41 +1,40 @@
 <script setup>
-import 'APlayer/dist/APlayer.min.css';
-import APlayer from 'APlayer';
-import { onMounted, nextTick, computed} from 'vue';
+import 'APlayer/dist/APlayer.min.css'
+import APlayer from 'APlayer'
+import { computed, nextTick, onMounted } from 'vue'
 import { usePinia } from '@/pinia'
 
 const pinia = usePinia()
-onMounted(async ()=>{
+onMounted(async () => {
   const wyPlayer = new APlayer({
     container: document.getElementById('aplayer'),
     lrcType: 1,
-  });
-  await nextTick();
+  })
+  await nextTick()
   wyPlayer.on('listadd', () => {
     console.log('listadd')
   })
   wyPlayer.on('loadeddata', () => {
     wyPlayer.play()
   })
-  wyPlayer.on('timeupdate', function () {
-    const el = document.querySelector('.aplayer-lrc-current');
-    if (el){
+  wyPlayer.on('timeupdate', () => {
+    const el = document.querySelector('.aplayer-lrc-current')
+    if (el) {
       el.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
-      });
+      })
     }
-  });
-  const lrcContainer = document.querySelector('.aplayer .aplayer-lrc');
+  })
+  const lrcContainer = document.querySelector('.aplayer .aplayer-lrc')
   lrcContainer.addEventListener('click', (event) => {
     console.dir(event.target)
     if (event.target.tagName === 'P') {
-      const a = wyPlayer.lrc.current.find(item=>item[1]===elements[i].innerHTML)
-      if(a){
+      const a = wyPlayer.lrc.current.find(item => item[1] === elements[i].innerHTML)
+      if (a)
         wyPlayer.seek(a[0])
-      }
     }
-  });
+  })
   pinia.wyPlayer = wyPlayer
 })
 
@@ -43,20 +42,25 @@ const hiddenLyric = () => {
   pinia.showLyric = false
 }
 
-const currentPlaying = computed(()=>pinia.currentPlaying)
+const currentPlaying = computed(() => pinia.currentPlaying)
 </script>
+
 <template>
   <div class="player">
-    <div v-if="currentPlaying" class="player-bg" :style="{backgroundImage: `url(${currentPlaying.picUrl}?param=512y512)`}">
-      <div class="player-bg__div"></div>
+    <div v-if="currentPlaying" class="player-bg" :style="{ backgroundImage: `url(${currentPlaying.picUrl}?param=512y512)` }">
+      <div class="player-bg__div" />
     </div>
     <div v-if="currentPlaying" class="player-info">
       <div class="music-contral">
         <img :src="`${currentPlaying.picUrl}?param=512y512`" alt="">
         <div class="music-info">
           <div>
-            <div class="name">{{ currentPlaying.name }}</div>
-            <div class="artist">{{ currentPlaying.artistName }}-{{ currentPlaying.alName }}</div>
+            <div class="name">
+              {{ currentPlaying.name }}
+            </div>
+            <div class="artist">
+              {{ currentPlaying.artistName }}-{{ currentPlaying.alName }}
+            </div>
           </div>
           <div class="volume-btns">
             音量控制
@@ -71,13 +75,14 @@ const currentPlaying = computed(()=>pinia.currentPlaying)
       </div>
     </div>
     <div class="player-lrc">
-      <div id="aplayer"></div>
+      <div id="aplayer" />
     </div>
     <ButtonIcon class="close-btn" @click="hiddenLyric">
-      <SvgIcon name="heartFill"/>
+      <SvgIcon name="heartFill" />
     </ButtonIcon>
   </div>
 </template>
+
 <style scoped lang="scss">
 .player{
   position: fixed;

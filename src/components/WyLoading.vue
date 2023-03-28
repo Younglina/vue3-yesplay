@@ -1,9 +1,10 @@
 <template>
   <div class="g-container">
-    <div class="g-first"></div>
-    <div v-for="item in 5" :key="item" class="g-ball"></div>
+    <div class="g-first" />
+    <div v-for="item in 5" :key="item" class="g-ball" />
   </div>
 </template>
+
 <style scoped lang='scss'>
 $count: 5;
 .g-container {
@@ -55,7 +56,6 @@ $count: 5;
   }
 }
 
-
 @keyframes scaleMove {
   25% {
     opacity: 1;
@@ -81,4 +81,5 @@ $count: 5;
     opacity: 0;
     transform: translate(1vw, 0) scale(1);
   }
-}</style>
+}
+</style>
