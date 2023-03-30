@@ -47,7 +47,10 @@ const currentPlaying = computed(() => pinia.currentPlaying)
 
 <template>
   <div class="player">
-    <div v-if="currentPlaying" class="player-bg" :style="{ backgroundImage: `url(${currentPlaying.picUrl}?param=512y512)` }">
+    <div
+      v-if="currentPlaying" class="player-bg"
+      :style="{ backgroundImage: `url(${currentPlaying.picUrl}?param=512y512)` }"
+    >
       <div class="player-bg__div" />
     </div>
     <div v-if="currentPlaying" class="player-info">
@@ -84,7 +87,7 @@ const currentPlaying = computed(() => pinia.currentPlaying)
 </template>
 
 <style scoped lang="scss">
-.player{
+.player {
   position: fixed;
   top: 0;
   left: 0;
@@ -92,115 +95,144 @@ const currentPlaying = computed(() => pinia.currentPlaying)
   bottom: 0;
   z-index: 249;
   display: flex;
-  &-info,&-lrc{
+
+  &-info,
+  &-lrc {
     display: flex;
     flex: 1;
     z-index: 1;
   }
-  &-lrc{
+
+  &-lrc {
     padding-left: 88px;
     margin-right: 80px;
   }
-  &-info{
+
+  &-info {
     align-items: center;
     justify-content: flex-end;
     margin: 20px 20px 0 0;
-    img{
+
+    img {
       width: 55vh;
       height: 55vh;
       border-radius: 0.8em;
     }
   }
 }
-.player-bg{
+
+.player-bg {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-size: 100% 100%;
-  &__div{
+
+  &__div {
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(50px);
   }
 }
-.music-contral{
+
+.music-contral {
   color: var(--color-normal);
-  .music-info{
+
+  .music-info {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 30px;
-    .name{
+
+    .name {
       font-size: 1.4em;
       font-weight: 600;
     }
-    .artist{
+
+    .artist {
       color: var(--color-normal-1);
     }
   }
-  .music-info,.time-btns{
+
+  .music-info,
+  .time-btns {
     margin-bottom: 18px
   }
 }
-:deep(#aplayer){
-  font-family: Arial,Helvetica,sans-serif;
+
+:deep(#aplayer) {
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   box-shadow: unset;
   border-radius: 0px;
   background-color: transparent;
   max-width: 600px;
-  .aplayer-info{
+
+  .aplayer-info {
     padding: 0;
     margin-left: 0;
     margin-right: 24px;
   }
-  .aplayer-lrc{
+
+  .aplayer-lrc {
     height: 100vh;
     overflow-y: auto;
     margin: 0;
-    &:after{
+
+    &:after {
       display: none;
     }
-    p{
+
+    p {
       font-weight: 600;
       font-size: 1.5em;
-      line-height: unset!important;
-      height: auto!important;
+      line-height: unset !important;
+      height: auto !important;
       padding: 12px 20px !important;
       margin: 4px 0 !important;
       border-radius: 12px;
       opacity: 0.6;
       transition: translate .5s ease-out;
       cursor: pointer;
-      &:hover{
+
+      &:hover {
         background-color: var(--color-bg-gray);
       }
     }
-    .aplayer-lrc-current{
+
+    .aplayer-lrc-current {
       opacity: 1 !important;
       color: var(--color-normal)
     }
   }
+
   .aplayer-lrc::-webkit-scrollbar {
     display: none;
   }
-  .aplayer-lrc-contents{
+
+  .aplayer-lrc-contents {
     transform: translateY(0) !important;
     text-align: left;
   }
-  .aplayer-lrc-contents p{
-    &:first-child{
-      margin-top: 50vh!important;
+
+  .aplayer-lrc-contents p {
+    &:first-child {
+      margin-top: 50vh !important;
     }
   }
-  .aplayer-list,.aplayer-pic,.aplayer-music,.aplayer-controller,.aplayer-notice{
+
+  .aplayer-list,
+  .aplayer-pic,
+  .aplayer-music,
+  .aplayer-controller,
+  .aplayer-notice {
     display: none;
   }
 }
-.close-btn{
+
+.close-btn {
   position: absolute;
   right: 20px;
   top: 20px;
