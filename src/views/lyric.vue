@@ -2,6 +2,7 @@
 import 'APlayer/dist/APlayer.min.css'
 import APlayer from 'APlayer'
 import { computed, nextTick, onMounted } from 'vue'
+import { initPlayer } from '@/utils/useMusic.js'
 import { usePinia } from '@/pinia'
 
 const pinia = usePinia()
@@ -11,12 +12,7 @@ onMounted(async () => {
     lrcType: 1,
   })
   await nextTick()
-  wyPlayer.on('listadd', () => {
-    console.log('listadd')
-  })
-  wyPlayer.on('loadeddata', () => {
-    wyPlayer.play()
-  })
+  initPlayer(wyPlayer)
   wyPlayer.on('timeupdate', () => {
     const el = document.querySelector('.aplayer-lrc-current')
     if (el) {
@@ -81,7 +77,7 @@ const currentPlaying = computed(() => pinia.currentPlaying)
       <div id="aplayer" />
     </div>
     <ButtonIcon class="close-btn" @click="hiddenLyric">
-      <SvgIcon name="heartFill" />
+      <SvgIcon name="down" />
     </ButtonIcon>
   </div>
 </template>
@@ -174,6 +170,7 @@ const currentPlaying = computed(() => pinia.currentPlaying)
     padding: 0;
     margin-left: 0;
     margin-right: 24px;
+    border: none;
   }
 
   .aplayer-lrc {
@@ -181,7 +178,7 @@ const currentPlaying = computed(() => pinia.currentPlaying)
     overflow-y: auto;
     margin: 0;
 
-    &:after {
+    &:before, &:after {
       display: none;
     }
 

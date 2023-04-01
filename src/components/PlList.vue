@@ -3,14 +3,11 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ContextMenu from '@/components/ContextMenu'
 import { formatDT, getImgUrl } from '@/utils/useTool.js'
-import { usePinia } from '@/pinia'
-import Message from '@/components/Message'
-import { getLyric, getSongDetail } from '@/api/music.js'
+import { playMusic } from '@/utils/useMusic.js'
 defineProps({
   list: { default: () => [] },
 })
 
-const pinia = usePinia()
 const route = useRoute()
 const notAlbum = computed(() => {
   return route.name !== 'album'
@@ -20,30 +17,6 @@ const openMenu = (e, data) => {
   e.preventDefault()
   data.menuType = 'playlist'
   ContextMenu(e, data)
-}
-const playMusic = (item) => {
-  if (item.fee === 1) {
-    Message.warning('vip 歌曲')
-    return false
-  }
-  getSongDetail(item.id).then(async (res) => {
-    const lyric = await getLyric(item.id)
-    const songs = res.songs
-    if (songs && songs.length > 0) {
-      const cur = {
-        name: songs[0].name,
-        artistName: songs[0].ar[0].name,
-        artistId: songs[0].ar[0].id,
-        url: `https://music.163.com/song/media/outer/url?id=${item.id}`,
-        picUrl: songs[0].al.picUrl,
-        alName: songs[0].al.name,
-        alId: songs[0].al.id,
-        lrc: lyric?.lrc?.lyric,
-      }
-      pinia.wyPlayer.list.add(cur)
-      pinia.currentPlaying = cur
-    }
-  })
 }
 </script>
 
@@ -56,7 +29,7 @@ const playMusic = (item) => {
       @click.right.native="openMenu($event, item, idx)"
       @dblclick="playMusic(item)"
     >
-      <img v-if="notAlbum" :src="getImgUrl(item.al)" class="pl-list__img" loading="lazy" alt="图片" @click="$router.push(`/album/${item.al.id}`)">
+      <img v-if="notAlbum" :src="item.picUrl || getImgUrl(item.al)" class="pl-list__img" loading="lazy" alt="图片" @click="$router.push(`/album/${item.al.id}`)">
       <div v-else class="pl-list__playidx">
         <div class="pl-list__idx">
           {{ idx + 1 }}

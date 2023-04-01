@@ -1,10 +1,11 @@
 <script setup>
-import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import Lyric from './views/lyric.vue'
+import BottomBar from './components/BottomBar.vue'
 import { usePinia } from '@/pinia'
 
 const pinia = usePinia()
-const showLyric = computed(() => pinia.showLyric)
+const { showLyric, currentPlaying } = storeToRefs(pinia)
 </script>
 
 <template>
@@ -16,9 +17,7 @@ const showLyric = computed(() => pinia.showLyric)
       </keep-alive>
     </router-view>
   </main>
-  <div @click="pinia.showLyric = true">
-    123
-  </div>
+  <BottomBar v-if="currentPlaying" />
   <transition name="slide">
     <Lyric v-show="showLyric" />
   </transition>
@@ -34,7 +33,7 @@ main{
   transition: all 0.4s;
 }
 
-.slide-enter, .slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.slide-enter-from, .slide-leave-to {
   transform: translateY(100%);
 }
 </style>

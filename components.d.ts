@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BottomBar: typeof import('./src/components/BottomBar.vue')['default']
     ButtonIcon: typeof import('./src/components/ButtonIcon.vue')['default']
     CardList: typeof import('./src/components/CardList.vue')['default']
     ContentLoader: typeof import('./src/components/ContentLoader.vue')['default']

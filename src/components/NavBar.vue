@@ -8,7 +8,7 @@ const currentNav = computed(() => route.name)
 </script>
 
 <template>
-  <nav class="nav">
+  <nav class="nav wy-bar">
     <div class="nav-btns">
       <ButtonIcon radius="20%" @click="$router.go(-1)">
         <SvgIcon name="back" />
@@ -37,23 +37,8 @@ const currentNav = computed(() => route.name)
 
 <style scoped lang='scss'>
 .nav {
-  position: fixed;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   top: 0;
-  right: 0;
-  left: 0;
   height: 60px;
-
-  padding: {
-    right: 10vw;
-    left: 10vw;
-  }
-
-  backdrop-filter: saturate(180%) blur(20px);
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 49;
 
   &-btns,
   &-links {

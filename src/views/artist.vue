@@ -4,6 +4,7 @@ import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import Message from '@/components/Message'
 import { getAlbumByArtist, getArtist, getArtistMV } from '@/api/music.js'
 import { formatData, getImgUrl } from '@/utils/useTool.js'
+import { playMusic } from '@/utils/useMusic.js'
 import ContentLoader from '@/components/ContentLoader.vue'
 
 const artistDetail = ref(null)
@@ -96,8 +97,8 @@ const joinLike = () => {
         热门歌曲
       </div>
       <div class="hot-songs">
-        <div v-for="item in artistDetail.hotSongs.slice(0, 12)" :key="item.id" class="hot-songs__items">
-          <img :src="getImgUrl(item)" loading="lazy" alt="hotsong">
+        <div v-for="item in artistDetail.hotSongs.slice(0, 12)" :key="item.id" class="hot-songs__items" @dblclick="playMusic(item)">
+          <img :src="getImgUrl(item)" loading="lazy" alt="hotsong" @click.stop="$router.push(`/album/${item.alId}`)">
           <div>
             <div class="hot-songs__name">
               {{ item.name }}
