@@ -1,6 +1,6 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { onBeforeRouteLeave, useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import Message from '@/components/Message'
 import ContextMenu from '@/components/ContextMenu'
 import { getPlayListDetail } from '@/api/music.js'
@@ -11,17 +11,13 @@ const playlistDetail = ref(null)
 const isLike = ref(false)
 
 const route = useRoute()
-const routeWatch = watch(() => route.params, async (val) => {
+onMounted(() => {
   playlistDetail.value = null
-  getPlayListDetail(`${val.id}`).then((res) => {
+  getPlayListDetail(`${route.params.id}`).then((res) => {
     playlistDetail.value = res.playlist
   }).catch((e) => {
     Message.error(e.message)
   })
-}, { immediate: true })
-
-onBeforeRouteLeave(() => {
-  routeWatch()
 })
 
 const joinLike = () => {

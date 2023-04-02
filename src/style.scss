@@ -76,3 +76,30 @@ p{
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 49;
 }
+
+.wy-slider{
+  .vue-slider-rail{
+    background-color: var(--color-text);
+    &:hover{
+      .vue-slider-dot{
+        opacity: 1;
+      }
+    }
+  }
+  .vue-slider-dot{
+    opacity: 1;
+    border: none;
+      box-shadow: none;
+  }
+  .vue-slider-dot-handle{
+    border: none;
+    box-shadow: none;
+    &:hover{
+      border: none;
+      box-shadow: none;
+    }
+  }
+  .vue-slider-process{
+    background-color: #fff;
+  }
+}

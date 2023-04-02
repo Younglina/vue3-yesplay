@@ -12,7 +12,7 @@ const { showLyric, currentPlaying } = storeToRefs(pinia)
   <NavBar />
   <main>
     <router-view v-slot="{ Component }">
-      <keep-alive :include="['playlist', 'album']">
+      <keep-alive :include="['album']">
         <component :is="Component" />
       </keep-alive>
     </router-view>

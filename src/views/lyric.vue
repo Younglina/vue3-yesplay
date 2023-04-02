@@ -1,12 +1,29 @@
 <script setup>
 import 'APlayer/dist/APlayer.min.css'
 import APlayer from 'APlayer'
-import { computed, nextTick, onMounted } from 'vue'
-import { initPlayer } from '@/utils/useMusic.js'
+import { computed, nextTick, onMounted, ref } from 'vue'
+import VueSlider from 'vue-slider-component'
+import { initPlayer, musicCtrl } from '@/utils/useMusic.js'
+import { secondToTime } from '@/utils/useTool.js'
+import 'vue-slider-component/theme/antd.css'
 import { usePinia } from '@/pinia'
+const svgNames = [
+  { name: 'maxSound', title: '声音' },
+  { name: 'heart', title: '喜欢' },
+  { name: 'add', title: '添加到歌单' },
+  { name: 'cycle', title: '单曲循环' },
+  { name: 'prev', title: '上一首' },
+  { name: 'pause', title: '暂停' },
+  { name: 'next', title: '下一首' },
+  { name: 'random', title: '随机播放' }]
 
 const pinia = usePinia()
+const timeCtrl = ref(0)
+const beginTime = ref(0)
+const isMinSound = ref(false)
+
 onMounted(async () => {
+  beginTime.value = 0
   const wyPlayer = new APlayer({
     container: document.getElementById('aplayer'),
     lrcType: 1,
@@ -21,10 +38,13 @@ onMounted(async () => {
         block: 'center',
       })
     }
+    const currentTime = secondToTime(wyPlayer.audio.currentTime)
+    if (beginTime.value !== currentTime)
+      beginTime.value = currentTime
+    timeCtrl.value = ~~(wyPlayer.audio.currentTime)
   })
   const lrcContainer = document.querySelector('.aplayer .aplayer-lrc')
   lrcContainer.addEventListener('click', (event) => {
-    console.dir(event.target)
     if (event.target.tagName === 'P') {
       const a = wyPlayer.lrc.current.find(item => item[1] === elements[i].innerHTML)
       if (a)
@@ -39,6 +59,16 @@ const hiddenLyric = () => {
 }
 
 const currentPlaying = computed(() => pinia.currentPlaying)
+const handleClick = (type) => {
+  switch (type) {
+    default:
+      musicCtrl(type)
+  }
+}
+const hanldeDragEnd = () => {
+  console.log(timeCtrl.value)
+  pinia.wyPlayer.seek(timeCtrl.value)
+}
 </script>
 
 <template>
@@ -62,14 +92,39 @@ const currentPlaying = computed(() => pinia.currentPlaying)
             </div>
           </div>
           <div class="volume-btns">
-            音量控制
+            <ButtonIcon
+              v-for="item in svgNames.slice(0, 3)" :key="item" :title="item.title"
+              @click.stop="handleClick(item.name)"
+            >
+              <SvgIcon :name="(item.name === 'maxSound' && isMinSound) ? 'minSound' : item.name" color="#fff" />
+            </ButtonIcon>
           </div>
         </div>
-        <div class="time-btns">
-          时间控制
+        <div class="time-btns wy-slider">
+          <span>{{ beginTime }}</span>
+          <VueSlider
+            v-model="timeCtrl"
+            :min="0"
+            :max="~~(currentPlaying.dt / 1000)"
+            :interval="1"
+            :drag-on-click="true"
+            :duration="0"
+            :dot-size="12"
+            :height="2"
+            :tooltip-formatter="secondToTime"
+            :lazy="true"
+            :silent="true"
+            @drag-end="hanldeDragEnd"
+          />
+          <span>{{ secondToTime(~~(currentPlaying.dt / 1000)) }}</span>
         </div>
         <div class="play-btns">
-          播放控制
+          <ButtonIcon
+            v-for="item in svgNames.slice(3)" :key="item" :title="item.title"
+            @click.stop="handleClick(item.name)"
+          >
+            <SvgIcon :name="(item.name === 'maxSound' && isMinSound) ? 'minSound' : item.name" color="#fff" />
+          </ButtonIcon>
         </div>
       </div>
     </div>
@@ -77,7 +132,7 @@ const currentPlaying = computed(() => pinia.currentPlaying)
       <div id="aplayer" />
     </div>
     <ButtonIcon class="close-btn" @click="hiddenLyric">
-      <SvgIcon name="down" />
+      <SvgIcon name="down" color="#fff" />
     </ButtonIcon>
   </div>
 </template>
@@ -156,6 +211,22 @@ const currentPlaying = computed(() => pinia.currentPlaying)
   .time-btns {
     margin-bottom: 18px
   }
+
+  .time-btns,
+  .play-btns,
+  .volume-btns {
+    display: flex;
+  }
+  .time-btns{
+    align-items: center;
+    .vue-slider{
+      flex: 1;
+      margin: 0 20px;
+    }
+  }
+  .play-btns {
+    justify-content: center;
+  }
 }
 
 :deep(#aplayer) {
@@ -178,7 +249,8 @@ const currentPlaying = computed(() => pinia.currentPlaying)
     overflow-y: auto;
     margin: 0;
 
-    &:before, &:after {
+    &:before,
+    &:after {
       display: none;
     }
 

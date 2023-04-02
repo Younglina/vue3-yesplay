@@ -17,6 +17,7 @@ specifiers:
   vue: ^3.2.45
   vue-content-loader: ^2.0.1
   vue-router: '4'
+  vue-slider-component: 4.1.0-beta.7
 
 dependencies:
   aplayer: registry.npmmirror.com/aplayer/1.10.1
@@ -28,6 +29,7 @@ dependencies:
   vue: 3.2.47
   vue-content-loader: 2.0.1_vue@3.2.47
   vue-router: 4.1.6_vue@3.2.47
+  vue-slider-component: 4.1.0-beta.7
 
 devDependencies:
   '@antfu/eslint-config': registry.npmmirror.com/@antfu/eslint-config/0.37.0_j4766f7ecgqbon3u7zlxn5zszu
@@ -1992,6 +1994,10 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.5.0
       vue: 3.2.47
+    dev: false
+
+  /vue-slider-component/4.1.0-beta.7:
+    resolution: {integrity: sha512-Qb7K920ZG7PoQswoF6Ias+i3W2rd3k4fpk04JUl82kEUcN86Yg6et7bVSKWt/7VpQe8a5IT3BqCKSCOZ7AJgCA==}
     dev: false
 
   /vue/3.2.47:

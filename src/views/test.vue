@@ -1,8 +1,13 @@
 <script setup>
 import 'APlayer/dist/APlayer.min.css'
 import APlayer from 'APlayer'
-import { nextTick, onMounted } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
+import { formatDT, secondToTime } from '@/utils/useTool.js'
 
+const aaa = ref(null)
+const beginTime = ref('0:00')
 onMounted(async () => {
   const ap = new APlayer({
     container: document.getElementById('aplayer'),
@@ -22,6 +27,9 @@ onMounted(async () => {
         block: 'center',
       })
     }
+    const currentTime = secondToTime(ap.audio.currentTime)
+    if (beginTime.value !== currentTime)
+      beginTime.value = currentTime
   })
   const lrcContainer = document.querySelector('.aplayer .aplayer-lrc')
   lrcContainer.addEventListener('click', (event) => {
@@ -31,13 +39,37 @@ onMounted(async () => {
         ap.seek(a[0])
     }
   })
+  aaa.value = ap
 })
+const timeCtrl = ref(0)
+const format = (v) => {
+  console.log(v, formatDT(v * 1000))
+  return formatDT(v * 1000)
+}
 </script>
 
 <template>
   <div class="player">
     <div class="player-info">
-      1234444
+      <button @click="handdd">
+        handdd
+      </button>
+      <span>{{ beginTime }}</span>
+      <VueSlider
+        v-model="timeCtrl"
+        style="min-width: 200px;"
+        :min="0"
+        :max="~~(325868 / 1000)"
+        :interval="1"
+        :drag-on-click="true"
+        :duration="0"
+        :dot-size="12"
+        :height="2"
+        :lazy="true"
+        :dot-options="{ tooltip: 'hover' }"
+        :tooltip-formatter="format"
+        :silent="true"
+      />
     </div>
     <div class="player-lrc">
       <div id="aplayer" />
@@ -59,6 +91,8 @@ onMounted(async () => {
     display: flex;
     flex: 1;
     z-index: 1;
+    align-items: center;
+    justify-content: center;
   }
   &-lrc{
     display: flex;
@@ -115,6 +149,33 @@ onMounted(async () => {
   }
   .aplayer-list,.aplayer-pic,.aplayer-music,.aplayer-controller,.aplayer-notice{
     display: none;
+  }
+}
+:deep(.vue-slider){
+  background: linear-gradient(to left top, rgb(21, 18, 13), rgb(29, 20, 18));
+  .vue-slider-rail{
+    background-color: var(--color-text);
+    &:hover{
+      .vue-slider-dot{
+        opacity: 1;
+      }
+    }
+  }
+  .vue-slider-dot{
+    opacity: 1;
+    border: none;
+      box-shadow: none;
+  }
+  .vue-slider-dot-handle{
+    border: none;
+    box-shadow: none;
+    &:hover{
+      border: none;
+      box-shadow: none;
+    }
+  }
+  .vue-slider-process{
+    background-color: #fff;
   }
 }
 </style>
