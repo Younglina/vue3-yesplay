@@ -1,6 +1,6 @@
 <script setup>
 import { reactive } from 'vue'
-import { getPersonalized } from '@/api/music.js'
+import { getAlbumNew, getPersonalized, getToplist, getToplistArtist } from '@/api/music.js'
 const cardList = reactive([
   {
     data: [],
@@ -10,33 +10,33 @@ const cardList = reactive([
     loading: true,
     api: getPersonalized,
   },
-  // {
-  //   data: [],
-  //   title: "新专速递",
-  //   type: 'album',
-  //   api: getAlbumNew,
-  //   loading: true,
-  //   key: 'albums',
-  // },
-  // {
-  //   data: [],
-  //   title: "推荐艺人",
-  //   type: 'artist',
-  //   api: getToplistArtist,
-  //   loading: true,
-  //   key: 'list',
-  //   subkey:'artists',
-  //   cardNum: 6
-  // },
-  // {
-  //   data: [],
-  //   title: "排行榜",
-  //   type: 'toplist',
-  //   api: getToplist,
-  //   loading: true,
-  //   key: 'list',
-  //   cardNum: 5,
-  // },
+  {
+    data: [],
+    title: '新专速递',
+    type: 'album',
+    api: getAlbumNew,
+    loading: true,
+    key: 'albums',
+  },
+  {
+    data: [],
+    title: '推荐艺人',
+    type: 'artist',
+    api: getToplistArtist,
+    loading: true,
+    key: 'list',
+    subkey: 'artists',
+    cardNum: 6,
+  },
+  {
+    data: [],
+    title: '排行榜',
+    type: 'toplist',
+    api: getToplist,
+    loading: true,
+    key: 'list',
+    cardNum: 5,
+  },
 ])
 
 cardList.map((item) => {

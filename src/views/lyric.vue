@@ -1,5 +1,4 @@
 <script setup>
-import 'APlayer/dist/APlayer.min.css'
 import APlayer from 'APlayer'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import VueSlider from 'vue-slider-component'
@@ -138,6 +137,7 @@ const hanldeDragEnd = () => {
 </template>
 
 <style scoped lang="scss">
+@import '../aplayer.css';
 .player {
   position: fixed;
   top: 0;
