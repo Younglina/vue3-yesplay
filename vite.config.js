@@ -7,7 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 export default defineConfig({
-  base: '/yseplay',
+  base: '/vue3-yesplay',
   plugins: [
     vue(),
     Components({}),
