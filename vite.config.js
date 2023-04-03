@@ -29,9 +29,6 @@ export default defineConfig({
       },
     },
   },
-  optimizeDeps: {
-    exclude: ['APlayer'],
-  },
   server: {
     proxy: {
       '/api': {

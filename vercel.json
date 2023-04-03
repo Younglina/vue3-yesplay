@@ -1,0 +1,13 @@
+{
+  "builds": [
+    {
+      "config": {
+        "build": {
+          "rollupOptions": {
+            "external": ["APlayer"]
+          }
+        }
+      }
+    }
+  ]
+}
